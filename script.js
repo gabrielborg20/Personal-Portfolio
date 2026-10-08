@@ -86,13 +86,13 @@
     return { ring, body, edge };
   }
   const mini = [
-    { g: $('#mark-iris'), fill: 'oklch(19% 0.028 258)', ring: 'oklch(19% 0.028 258)', edge: 'oklch(100% 0 0 / .85)' },
+    { g: $('#mark-iris'), fill: 'var(--ink)', ring: 'var(--ink)', edge: 'var(--ground)' },   // follows the theme
     { g: $('#fstop-iris'), fill: 'oklch(100% 0 0 / .92)', ring: 'oklch(100% 0 0 / .4)', edge: 'oklch(19% 0.028 258)' }
   ].filter(m => m.g).map(m => {
     const parts = buildMini(m.g);
-    parts.body.setAttribute('fill', m.fill);
-    parts.ring.setAttribute('stroke', m.ring);
-    parts.edge.setAttribute('stroke', m.edge);
+    parts.body.style.fill = m.fill;
+    parts.ring.style.stroke = m.ring;
+    parts.edge.style.stroke = m.edge;
     return parts;
   });
   function drawMini(open) {
@@ -544,7 +544,42 @@
     }));
   }
 
+  /* ---------- Theme: the exposure mode dial ----------
+     Follows the system until the visitor turns the dial; after that their choice is kept.
+     The change runs as a view transition (a short re-exposure) where supported. */
+  function setupTheme() {
+    const dial = $('#theme-dial');
+    const root = document.documentElement;
+    const meta = $('meta[name="theme-color"]');
+    const sys = matchMedia('(prefers-color-scheme: dark)');
+    const stored = () => { try { return localStorage.getItem('theme'); } catch (e) { return null; } };
+    const reflect = () => {
+      const dark = root.getAttribute('data-theme') === 'dark';
+      if (meta) meta.content = dark ? '#090e16' : '#f4f6f8';
+      if (dial) {
+        dial.setAttribute('aria-checked', String(dark));
+        dial.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
+      }
+    };
+    const apply = (theme, animate) => {
+      if (root.getAttribute('data-theme') === theme) return;
+      const swap = () => { root.setAttribute('data-theme', theme); reflect(); };
+      if (animate && !reduce && document.startViewTransition) document.startViewTransition(swap);
+      else swap();
+    };
+    reflect();
+    if (dial) dial.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      dial.classList.remove('is-click'); void dial.offsetWidth; dial.classList.add('is-click');
+      apply(next, true);
+    });
+    const onSystem = e => { if (!stored()) apply(e.matches ? 'dark' : 'light', true); };
+    sys.addEventListener ? sys.addEventListener('change', onSystem) : sys.addListener(onSystem);
+  }
+
   /* ---------- Init ---------- */
+  setupTheme();
   const yr = $('#year'); if (yr) yr.textContent = new Date().getFullYear();
   drawLens(0); drawMini(1);
   setupReveal(); setupTimeline(); setupSpotlight(); setupMagnetic(); setupNavState(); setupTilt(); setupPipe(); setupVR(); setupCompass(); setupFocusContact();

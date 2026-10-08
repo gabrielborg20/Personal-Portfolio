@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Gabriel Borg | AI Researcher & Photographer</title>
 <meta name="description" content="Gabriel Borg is a Research Support Officer at the University of Malta, a photographer and a scout, interested in AI, technology and innovation.">
-<meta name="theme-color" content="#f4f6f8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#f4f6f8">
 <meta property="og:title" content="Gabriel Borg | AI Researcher & Photographer">
 <meta property="og:description" content="Generative AI and virtual reality for immersive, adaptive learning. University of Malta.">
 <meta property="og:type" content="website">
@@ -14,7 +14,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Funnel+Sans:wght@300..800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<script>document.documentElement.classList.add('js')</script>
+<script>
+  /* Theme before first paint: the visitor's saved choice, otherwise the system's. */
+  (function () {
+    var d = document.documentElement, t = null;
+    try { t = localStorage.getItem('theme'); } catch (e) {}
+    var dark = t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    d.setAttribute('data-theme', dark ? 'dark' : 'light');
+    d.classList.add('js');
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.content = dark ? '#090e16' : '#f4f6f8';
+  })();
+</script>
 </head>
 <body>
 
@@ -34,7 +45,69 @@
     <a href="#scouts">Scouts</a>
     <a href="#photography">Photography</a>
   </nav>
-  <a class="btn btn--small" href="#contact" data-focus-contact>Get in touch</a>
+  <div class="nav__actions">
+    <!-- Exposure mode dial: day / night. Two detents; the glyph under the red index is the active theme. -->
+    <button class="dial" id="theme-dial" type="button" role="switch" aria-checked="false" aria-label="Dark mode" title="Switch to dark mode">
+      <svg viewBox="-50 -50 100 100" aria-hidden="true" focusable="false">
+        <defs>
+          <radialGradient id="dial-metal" cx="38%" cy="30%" r="80%">
+            <stop class="dial__s1" offset="0"/><stop class="dial__s2" offset="1"/>
+          </radialGradient>
+        </defs>
+        <g class="dial__rot">
+          <circle class="dial__rim" r="47.5"/>
+          <g class="dial__knurl">
+            <line x1="0.00" y1="-38.00" x2="0.00" y2="-45.50"/>
+            <line x1="5.94" y1="-37.53" x2="7.12" y2="-44.94"/>
+            <line x1="11.74" y1="-36.14" x2="14.06" y2="-43.27"/>
+            <line x1="17.25" y1="-33.86" x2="20.66" y2="-40.54"/>
+            <line x1="22.34" y1="-30.74" x2="26.74" y2="-36.81"/>
+            <line x1="26.87" y1="-26.87" x2="32.17" y2="-32.17"/>
+            <line x1="30.74" y1="-22.34" x2="36.81" y2="-26.74"/>
+            <line x1="33.86" y1="-17.25" x2="40.54" y2="-20.66"/>
+            <line x1="36.14" y1="-11.74" x2="43.27" y2="-14.06"/>
+            <line x1="37.53" y1="-5.94" x2="44.94" y2="-7.12"/>
+            <line x1="38.00" y1="-0.00" x2="45.50" y2="-0.00"/>
+            <line x1="37.53" y1="5.94" x2="44.94" y2="7.12"/>
+            <line x1="36.14" y1="11.74" x2="43.27" y2="14.06"/>
+            <line x1="33.86" y1="17.25" x2="40.54" y2="20.66"/>
+            <line x1="30.74" y1="22.34" x2="36.81" y2="26.74"/>
+            <line x1="26.87" y1="26.87" x2="32.17" y2="32.17"/>
+            <line x1="22.34" y1="30.74" x2="26.74" y2="36.81"/>
+            <line x1="17.25" y1="33.86" x2="20.66" y2="40.54"/>
+            <line x1="11.74" y1="36.14" x2="14.06" y2="43.27"/>
+            <line x1="5.94" y1="37.53" x2="7.12" y2="44.94"/>
+            <line x1="0.00" y1="38.00" x2="0.00" y2="45.50"/>
+            <line x1="-5.94" y1="37.53" x2="-7.12" y2="44.94"/>
+            <line x1="-11.74" y1="36.14" x2="-14.06" y2="43.27"/>
+            <line x1="-17.25" y1="33.86" x2="-20.66" y2="40.54"/>
+            <line x1="-22.34" y1="30.74" x2="-26.74" y2="36.81"/>
+            <line x1="-26.87" y1="26.87" x2="-32.17" y2="32.17"/>
+            <line x1="-30.74" y1="22.34" x2="-36.81" y2="26.74"/>
+            <line x1="-33.86" y1="17.25" x2="-40.54" y2="20.66"/>
+            <line x1="-36.14" y1="11.74" x2="-43.27" y2="14.06"/>
+            <line x1="-37.53" y1="5.94" x2="-44.94" y2="7.12"/>
+            <line x1="-38.00" y1="0.00" x2="-45.50" y2="0.00"/>
+            <line x1="-37.53" y1="-5.94" x2="-44.94" y2="-7.12"/>
+            <line x1="-36.14" y1="-11.74" x2="-43.27" y2="-14.06"/>
+            <line x1="-33.86" y1="-17.25" x2="-40.54" y2="-20.66"/>
+            <line x1="-30.74" y1="-22.34" x2="-36.81" y2="-26.74"/>
+            <line x1="-26.87" y1="-26.87" x2="-32.17" y2="-32.17"/>
+            <line x1="-22.34" y1="-30.74" x2="-26.74" y2="-36.81"/>
+            <line x1="-17.25" y1="-33.86" x2="-20.66" y2="-40.54"/>
+            <line x1="-11.74" y1="-36.14" x2="-14.06" y2="-43.27"/>
+            <line x1="-5.94" y1="-37.53" x2="-7.12" y2="-44.94"/>
+          </g>
+          <circle class="dial__face" r="35" fill="url(#dial-metal)"/>
+          <g class="dial__sun" transform="rotate(-45) translate(0 -20)"><circle r="4.4"/><line x1="0.00" y1="-6.60" x2="0.00" y2="-9.40"/><line x1="4.67" y1="-4.67" x2="6.65" y2="-6.65"/><line x1="6.60" y1="-0.00" x2="9.40" y2="-0.00"/><line x1="4.67" y1="4.67" x2="6.65" y2="6.65"/><line x1="0.00" y1="6.60" x2="0.00" y2="9.40"/><line x1="-4.67" y1="4.67" x2="-6.65" y2="6.65"/><line x1="-6.60" y1="0.00" x2="-9.40" y2="0.00"/><line x1="-4.67" y1="-4.67" x2="-6.65" y2="-6.65"/></g>
+          <g class="dial__moon" transform="rotate(45) translate(0 -20)"><path d="M2.6 -7.6A8 8 0 1 0 8 3.9 6.3 6.3 0 0 1 2.6 -7.6Z"/></g>
+          <circle class="dial__hub" r="4.2"/>
+        </g>
+        <path class="dial__index" d="M-5.5 -51H5.5L0 -42.5Z"/>
+      </svg>
+    </button>
+    <a class="btn btn--small" href="#contact" data-focus-contact>Get in touch</a>
+  </div>
 </header>
 
 <!-- Scroll-driven f-stop readout -->
@@ -138,7 +211,7 @@
 
             <!-- source: a lesson with a presenter and their voice -->
             <g class="pipe__src" transform="translate(-152 -44)">
-              <rect width="62" height="88" rx="7" fill="oklch(19% 0.028 258)"/>
+              <rect class="pipe__src-card" width="62" height="88" rx="7" fill="oklch(19% 0.028 258)"/>
               <rect x="7" y="8" width="30" height="4" rx="2" fill="oklch(100% 0 0 / .85)"/>
               <rect x="7" y="16" width="20" height="3" rx="1.5" fill="oklch(100% 0 0 / .35)"/>
               <circle cx="31" cy="40" r="11" fill="oklch(40% 0.03 258)"/>
@@ -263,7 +336,7 @@
       <div class="project__body">
         <h3>Project WAVE</h3>
         <p class="project__tag">Water rescue and Artificial Intelligence within a Virtual reality Environment</p>
-        <p>A VR simulation of Maltese beaches developed and using in Unreal Engine, paired with large language models, to be used for water rescue scenarios that can be rehearsed for training.</p>
+        <p>A VR simulation of Maltese beaches developed in Unreal Engine and paired with Generative and Explainable AI, providing realistic water rescue scenarios that can be used for training.</p>
       </div>
       <ul class="chips"><li>Virtual reality</li><li>Unreal Engine</li><li>Large language models</li></ul>
     </article>
