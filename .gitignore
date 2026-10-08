@@ -1,0 +1,7 @@
+# Full-size photo originals (the site only uses the resized copies)
+assets/photos/*.orig.jpg
+
+# Local tooling and planning notes, not part of the site
+.claude/
+.impeccable/
+PRODUCT.md

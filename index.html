@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gabriel Borg | AI Researcher & Photographer</title>
+<meta name="description" content="Gabriel Borg is a Research Support Officer at the University of Malta, a photographer and a scout, interested in AI, technology and innovation.">
+<meta name="theme-color" content="#f4f6f8" media="(prefers-color-scheme: light)">
+<meta property="og:title" content="Gabriel Borg | AI Researcher & Photographer">
+<meta property="og:description" content="Generative AI and virtual reality for immersive, adaptive learning. University of Malta.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Funnel+Sans:wght@300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Floating nav -->
+<header class="nav" id="nav">
+  <a class="nav__brand" href="#top" aria-label="Gabriel Borg, back to top">
+    <svg class="nav__mark" viewBox="-50 -50 100 100" aria-hidden="true"><g id="mark-iris"></g></svg>
+    <span>Gabriel Borg</span>
+  </a>
+  <nav class="nav__links" aria-label="Primary">
+    <a href="#research">Research</a>
+    <a href="#publications">Publications</a>
+    <a href="#experience">Experience</a>
+    <a href="#education">Education</a>
+    <a href="#scouts">Scouts</a>
+    <a href="#photography">Photography</a>
+  </nav>
+  <a class="btn btn--small" href="#contact" data-focus-contact>Get in touch</a>
+</header>
+
+<!-- Scroll-driven f-stop readout -->
+<div class="fstop" id="fstop" aria-hidden="true">
+  <svg viewBox="-50 -50 100 100"><g id="fstop-iris"></g></svg>
+  <span class="fstop__num">f/<b id="fstop-val">1.4</b></span>
+</div>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero__copy">
+    <h1 class="hero__name" aria-label="Gabriel Borg">
+      <span class="line"><span class="line__in">Gabriel</span></span>
+      <span class="line"><span class="line__in">Borg</span></span>
+    </h1>
+    <p class="hero__lead reveal">
+      Interested in <em>AI, technology and innovation</em>. Research Support Officer at the University of Malta, photographer and scout.
+    </p>
+    <div class="hero__cta reveal">
+      <a class="btn btn--primary" href="#contact" data-focus-contact data-magnetic>Get in touch</a>
+      <a class="btn btn--ghost" href="https://gborgphotography.com" target="_blank" rel="noopener">
+        View photography
+        <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg>
+      </a>
+    </div>
+    <p class="hero__meta reveal">
+      <span>Department of Artificial Intelligence, University of Malta</span>
+      <span>Naxxar, Malta</span>
+    </p>
+  </div>
+
+  <div class="hero__lens" id="lens" aria-hidden="true">
+    <svg viewBox="-110 -110 220 220" class="lens__svg">
+      <defs>
+        <radialGradient id="light" cx="50%" cy="46%" r="60%">
+          <stop offset="0" stop-color="oklch(98% 0.03 90)"/>
+          <stop offset=".45" stop-color="oklch(90% 0.08 70)"/>
+          <stop offset="1" stop-color="oklch(66% 0.19 38)"/>
+        </radialGradient>
+        <radialGradient id="barrel" cx="40%" cy="30%" r="85%">
+          <stop offset="0" stop-color="oklch(36% 0.03 258)"/>
+          <stop offset="1" stop-color="oklch(15% 0.025 258)"/>
+        </radialGradient>
+        <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="oklch(70% 0.02 250)"/>
+          <stop offset=".5" stop-color="oklch(30% 0.02 255)"/>
+          <stop offset="1" stop-color="oklch(60% 0.02 250)"/>
+        </linearGradient>
+        <clipPath id="disc"><circle r="92"/></clipPath>
+      </defs>
+      <circle r="106" fill="url(#rim)"/>
+      <circle r="101" fill="oklch(20% 0.025 258)"/>
+      <circle r="98.5" fill="none" stroke="oklch(100% 0 0 / .14)" stroke-width=".6"/>
+      <!-- tick ring: f-stops -->
+      <g id="ticks"></g>
+      <circle r="92" fill="url(#light)"/>
+      <g clip-path="url(#disc)">
+        <path id="iris-fill" fill="url(#barrel)" fill-rule="evenodd"/>
+        <g id="iris-blades" stroke="oklch(100% 0 0 / .16)" stroke-width=".5" fill="none"></g>
+        <path id="iris-edge" fill="none" stroke="oklch(100% 0 0 / .5)" stroke-width=".7" stroke-linejoin="round"/>
+      </g>
+      <circle r="92" fill="none" stroke="oklch(0% 0 0 / .5)" stroke-width="1.2"/>
+    </svg>
+    <div class="lens__glare"></div>
+  </div>
+
+  <a class="hero__scroll" href="#research" aria-label="Scroll to research">
+    <span></span>
+  </a>
+</section>
+
+<!-- RESEARCH -->
+<section class="sec" id="research">
+  <div class="sec__head">
+    <div class="sec__copy">
+      <h2 class="display reveal">Research Projects</h2>
+      <p class="sec__sub reveal">Since March 2025 I have worked as a Research Support Officer on two projects at the University of Malta, researching current AI methods, writing deliverables and publishing the results.</p>
+    </div>
+  </div>
+
+  <div class="projects">
+    <article class="project reveal" data-spot>
+      <div class="project__art">
+        <!-- ACCLAIMED: one lesson in, through a neural network, out as slides, video, assessment and VR, in any language -->
+        <div class="pipe" id="pipe" aria-hidden="true">
+          <svg viewBox="-160 -100 320 200" class="pipe__svg">
+            <defs>
+              <linearGradient id="pipe-beam-in" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="oklch(85% 0.11 62 / .05)"/>
+                <stop offset="1" stop-color="oklch(80% 0.14 55 / .55)"/>
+              </linearGradient>
+              <clipPath id="pipe-vr-thumb"><circle r="12"/></clipPath>
+            </defs>
+
+            <!-- beams -->
+            <path d="M-92 -34L-42 -26V26L-92 34Z" fill="url(#pipe-beam-in)"/>
+            <g id="pipe-rays" fill="none" stroke="oklch(72% 0.15 48 / .55)" stroke-width=".8" stroke-dasharray="2 3"></g>
+            <g id="pipe-sparks" fill="oklch(70% 0.18 42)"></g>
+
+            <!-- source: a lesson with a presenter and their voice -->
+            <g class="pipe__src" transform="translate(-152 -44)">
+              <rect width="62" height="88" rx="7" fill="oklch(19% 0.028 258)"/>
+              <rect x="7" y="8" width="30" height="4" rx="2" fill="oklch(100% 0 0 / .85)"/>
+              <rect x="7" y="16" width="20" height="3" rx="1.5" fill="oklch(100% 0 0 / .35)"/>
+              <circle cx="31" cy="40" r="11" fill="oklch(40% 0.03 258)"/>
+              <circle cx="31" cy="36.5" r="4.2" fill="oklch(85% 0.05 60)"/>
+              <path d="M23.5 48.5a7.5 7 0 0 1 15 0" fill="oklch(85% 0.05 60)"/>
+              <g id="pipe-wave" fill="oklch(76% 0.16 50)"></g>
+            </g>
+
+            <!-- the model: a small neural network that lights up layer by layer as each lesson passes through -->
+            <g class="pipe__net">
+              <rect x="-42" y="-44" width="76" height="88" rx="10" fill="oklch(19% 0.028 258)" stroke="oklch(32% 0.03 258)" stroke-width="1"/>
+              <rect x="-41" y="-43" width="74" height="86" rx="9" fill="none" stroke="oklch(100% 0 0 / .06)" stroke-width="1"/>
+              <g id="pipe-edges" stroke-linecap="round"></g>
+              <g id="pipe-nodes"></g>
+            </g>
+
+            <!-- outputs -->
+            <g class="pipe__out" id="pipe-o0" transform="translate(80 -82)">
+              <rect class="pipe__card" width="74" height="34" rx="6"/>
+              <rect x="7" y="7" width="26" height="4" rx="2" fill="oklch(19% 0.028 258)"/>
+              <rect x="7" y="15" width="34" height="2.5" rx="1.25" fill="oklch(80% 0.01 250)"/>
+              <rect x="7" y="20.5" width="28" height="2.5" rx="1.25" fill="oklch(80% 0.01 250)"/>
+              <rect x="46" y="20" width="4" height="8" rx="1" fill="oklch(80% 0.01 250)"/>
+              <rect x="52" y="15" width="4" height="13" rx="1" fill="oklch(56% 0.2 33)"/>
+              <rect x="58" y="18" width="4" height="10" rx="1" fill="oklch(80% 0.01 250)"/>
+            </g>
+            <g class="pipe__out" id="pipe-o1" transform="translate(80 -38)">
+              <rect class="pipe__card" width="74" height="34" rx="6"/>
+              <rect x="6" y="6" width="34" height="22" rx="3" fill="oklch(19% 0.028 258)"/>
+              <path d="M20 12.5L27.5 17L20 21.5Z" fill="#fff"/>
+              <rect x="45" y="9" width="22" height="2.5" rx="1.25" fill="oklch(80% 0.01 250)"/>
+              <rect x="45" y="14.5" width="16" height="2.5" rx="1.25" fill="oklch(80% 0.01 250)"/>
+              <rect x="45" y="23" width="22" height="2" rx="1" fill="oklch(88% 0.009 250)"/>
+              <rect id="pipe-progress" x="45" y="23" width="8" height="2" rx="1" fill="oklch(56% 0.2 33)"/>
+            </g>
+            <g class="pipe__out" id="pipe-o2" transform="translate(80 6)">
+              <rect class="pipe__card" width="74" height="34" rx="6"/>
+              <rect x="7" y="6.5" width="5" height="5" rx="1.2" fill="none" stroke="oklch(70% 0.01 250)" stroke-width=".8"/>
+              <rect x="7" y="14.5" width="5" height="5" rx="1.2" fill="oklch(56% 0.2 33)"/>
+              <path d="M8.2 17L9.3 18.1L11 15.9" fill="none" stroke="#fff" stroke-width=".9" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="7" y="22.5" width="5" height="5" rx="1.2" fill="none" stroke="oklch(70% 0.01 250)" stroke-width=".8"/>
+              <rect x="15" y="8" width="26" height="2.2" rx="1.1" fill="oklch(80% 0.01 250)"/>
+              <rect x="15" y="16" width="32" height="2.2" rx="1.1" fill="oklch(19% 0.028 258)"/>
+              <rect x="15" y="24" width="22" height="2.2" rx="1.1" fill="oklch(80% 0.01 250)"/>
+            </g>
+            <g class="pipe__out" id="pipe-o3" transform="translate(80 50)">
+              <rect class="pipe__card" width="74" height="34" rx="6"/>
+              <g transform="translate(19 17)">
+                <g clip-path="url(#pipe-vr-thumb)">
+                  <rect x="-12" y="-12" width="24" height="12" fill="oklch(86% 0.1 65)"/>
+                  <circle cy="0" r="3.4" fill="oklch(98% 0.04 88)"/>
+                  <rect x="-12" y="0" width="24" height="12" fill="oklch(38% 0.07 238)"/>
+                  <path d="M-12 4H12M-12 8H12" stroke="oklch(100% 0 0 / .35)" stroke-width=".5"/>
+                </g>
+                <circle r="12" fill="none" stroke="oklch(19% 0.028 258)" stroke-width="1.6"/>
+              </g>
+              <rect x="37" y="11" width="24" height="2.5" rx="1.25" fill="oklch(19% 0.028 258)"/>
+              <rect x="37" y="17" width="18" height="2.5" rx="1.25" fill="oklch(80% 0.01 250)"/>
+              <rect x="37" y="23" width="21" height="2.5" rx="1.25" fill="oklch(80% 0.01 250)"/>
+            </g>
+
+            <!-- language of each output, cycling: language-agnostic -->
+            <g font-family="Funnel Sans, system-ui, sans-serif" font-weight="700" font-size="5.6" text-anchor="middle" dominant-baseline="central" letter-spacing=".3">
+              <g transform="translate(146 -82)"><rect x="-9" y="-5" width="18" height="10" rx="5" fill="oklch(56% 0.2 33)"/><text class="pipe__lang" fill="#fff">EN</text></g>
+              <g transform="translate(146 -38)"><rect x="-9" y="-5" width="18" height="10" rx="5" fill="oklch(56% 0.2 33)"/><text class="pipe__lang" fill="#fff">MT</text></g>
+              <g transform="translate(146 6)"><rect x="-9" y="-5" width="18" height="10" rx="5" fill="oklch(56% 0.2 33)"/><text class="pipe__lang" fill="#fff">IT</text></g>
+              <g transform="translate(146 50)"><rect x="-9" y="-5" width="18" height="10" rx="5" fill="oklch(56% 0.2 33)"/><text class="pipe__lang" fill="#fff">FR</text></g>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="project__body">
+        <h3>Project ACCLAIMED</h3>
+        <p class="project__tag">AI Content Cloning for Language-Agnostic Media for Education Democratisation</p>
+        <p>A content generation tool that lets educators create slides, videos and assessments for educational settings.</p>
+      </div>
+      <ul class="chips"><li>Generative AI</li><li>Audio-visual cloning</li><li>Education</li></ul>
+    </article>
+
+    <article class="project project--feature reveal" data-spot>
+      <div class="project__art">
+        <!-- WAVE: stereo VR view, the hero's lens doubled into a headset looking out to sea -->
+        <div class="vr" id="vr" aria-hidden="true">
+          <svg viewBox="-160 -96 320 192" class="vr__svg">
+            <defs>
+              <linearGradient id="vr-sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="oklch(93% 0.05 85)"/>
+                <stop offset=".7" stop-color="oklch(85% 0.11 62)"/>
+                <stop offset="1" stop-color="oklch(72% 0.17 42)"/>
+              </linearGradient>
+              <linearGradient id="vr-sea" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="oklch(42% 0.08 235)"/>
+                <stop offset="1" stop-color="oklch(19% 0.03 258)"/>
+              </linearGradient>
+              <radialGradient id="vr-sun">
+                <stop offset="0" stop-color="oklch(99% 0.03 90)"/>
+                <stop offset=".35" stop-color="oklch(94% 0.08 80)"/>
+                <stop offset="1" stop-color="oklch(85% 0.12 60 / 0)"/>
+              </radialGradient>
+              <clipPath id="vr-eye"><circle r="54"/></clipPath>
+              <g id="vr-scene">
+                <rect x="-70" y="-60" width="140" height="68" fill="url(#vr-sky)"/>
+                <circle cy="4" r="30" fill="url(#vr-sun)"/>
+                <circle cy="4" r="10" fill="oklch(98% 0.04 88)"/>
+                <rect x="-70" y="6" width="140" height="56" fill="url(#vr-sea)"/>
+                <g id="vr-grid" stroke="oklch(100% 0 0 / .14)" stroke-width=".35"></g>
+                <g id="vr-waves" fill="none" stroke-linecap="round"></g>
+                <path id="vr-glint" stroke="oklch(92% 0.1 75)" stroke-linecap="round" fill="none"/>
+                <g id="vr-buoy">
+                  <ellipse rx="5.2" ry="2.1" fill="none" stroke="oklch(98% 0 0)" stroke-width="1.9"/>
+                  <ellipse rx="5.2" ry="2.1" fill="none" stroke="oklch(56% 0.2 33)" stroke-width="1.9" stroke-dasharray="4.1 4.1"/>
+                </g>
+                <line x1="-70" y1="6" x2="70" y2="6" stroke="oklch(100% 0 0 / .55)" stroke-width=".4"/>
+              </g>
+            </defs>
+            <path class="vr__body" d="M-88 -80H88A64 64 0 0 1 152 -16V16A64 64 0 0 1 88 80H36C24 80 20 54 0 54C-20 54 -24 80 -36 80H-88A64 64 0 0 1 -152 16V-16A64 64 0 0 1 -88 -80Z" fill="url(#barrel)" stroke="url(#rim)" stroke-width="3"/>
+            <path d="M-84 -73H84" stroke="oklch(100% 0 0 / .12)" stroke-width="1" stroke-linecap="round"/>
+            <g id="vr-eyes"></g>
+          </svg>
+        </div>
+      </div>
+      <div class="project__body">
+        <h3>Project WAVE</h3>
+        <p class="project__tag">Water rescue and Artificial Intelligence within a Virtual reality Environment</p>
+        <p>A VR simulation of Maltese beaches developed and using in Unreal Engine, paired with large language models, to be used for water rescue scenarios that can be rehearsed for training.</p>
+      </div>
+      <ul class="chips"><li>Virtual reality</li><li>Unreal Engine</li><li>Large language models</li></ul>
+    </article>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section class="sec" id="publications">
+  <div class="sec__head">
+    <h2 class="display reveal">Published work.</h2>
+    <p class="sec__sub reveal">Three peer-reviewed conference papers from 2025.</p>
+  </div>
+
+  <ol class="pubs">
+    <li class="pub reveal">
+      <div class="pub__venue">ICERI 2025 <span>Seville, Spain</span></div>
+      <div class="pub__main">
+        <h3>Advancing experiential learning through generative AI-powered virtual reality</h3>
+        <p>G. Borg, K. Azzopardi, K. Cini, L. Cardona, R. Caruana, V. Camilleri, D. Seychell, M. Montebello</p>
+      </div>
+      <a class="pub__link" href="https://doi.org/10.21125/iceri.2025.0391" target="_blank" rel="noopener">DOI<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
+    </li>
+    <li class="pub reveal">
+      <div class="pub__venue">ICERI 2025 <span>Seville, Spain</span></div>
+      <div class="pub__main">
+        <h3>Blending human expertise with generative AI</h3>
+        <p>K. Azzopardi, G. Borg, L. Cassar, V. Camilleri, D. Seychell, M. Montebello</p>
+      </div>
+      <a class="pub__link" href="https://doi.org/10.21125/iceri.2025.0392" target="_blank" rel="noopener">DOI<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
+    </li>
+    <li class="pub reveal">
+      <div class="pub__venue">ECEL 2025 <span>European Conference on e-Learning</span></div>
+      <div class="pub__main">
+        <h3>Leveraging generative AI and audio-visual cloning to democratise digital learning</h3>
+        <p>M. Montebello et al.</p>
+      </div>
+      <span class="pub__link pub__link--muted">pp. 485&ndash;493</span>
+    </li>
+  </ol>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="sec" id="experience">
+  <div class="sec__head">
+    <h2 class="display reveal">Where I have worked.</h2>
+  </div>
+
+  <div class="timeline" id="timeline">
+    <div class="timeline__rail"><span id="timeline-fill"></span></div>
+
+    <article class="role reveal">
+      <div class="role__when">Mar 2025 <i>to</i> present</div>
+      <div class="role__body">
+        <h3>Research Support Officer II</h3>
+        <p class="role__org">Department of Artificial Intelligence, University of Malta</p>
+        <p>Part of the development team behind ACCLAIMED and WAVE: Developing the WAVE virtual reality environment in Unreal Engine, staying abreast of new AI technology, delivering reports on schedule, and preparing the conference papers listed above.</p>
+      </div>
+    </article>
+
+    <article class="role reveal">
+      <div class="role__when">May 2023 <i>to</i> Jan 2025</div>
+      <div class="role__body">
+        <h3>Data Analyst</h3>
+        <p class="role__org">RSM Malta</p>
+        <p>Extracted and cleaned data from databases, APIs and spreadsheets; applied statistical techniques to find trends; built charts and dashboards; and wrote reports with recommendations for stakeholders, using Excel, SQL and Python.</p>
+      </div>
+    </article>
+
+    <article class="role role--minor reveal">
+      <div class="role__when">2020 <i>to</i> 2022</div>
+      <div class="role__body">
+        <h3>Student internships</h3>
+        <p class="role__org">University of Malta, Malta Digital Innovation Authority, RSM Malta</p>
+        <p>Three summer placements across video editing and game design (2020), data analysis (2021), and web scraping with database entry (2022).</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="sec" id="education">
+  <div class="sec__head">
+    <h2 class="display reveal">Two degrees, one subject.</h2>
+    <p class="sec__sub reveal">Artificial Intelligence at the University of Malta, from the bachelor's through to the master's.</p>
+  </div>
+
+  <div class="degrees">
+    <article class="degree degree--now reveal" data-spot>
+      <div class="degree__when">2023 &ndash; 2025</div>
+      <h3>MSc Artificial Intelligence</h3>
+      <p class="degree__field">Distinction &middot; Summa Cum Laude</p>
+      <p>Thesis: Employing Sentiment Analysis to Classify Text. Machine learning, neural networks and NLP for text classification.</p>
+    </article>
+    <article class="degree reveal" data-spot>
+      <div class="degree__when">2020 &ndash; 2023</div>
+      <h3>BSc IT (Hons), Artificial Intelligence</h3>
+      <p class="degree__field">First Class Honours</p>
+      <p>Thesis: Simultaneous Localisation and Mapping of a Mobile Robot in a Static Environment.</p>
+    </article>
+  </div>
+
+  <div class="toolkit reveal">
+    <div>
+      <h3>Languages &amp; tools</h3>
+      <ul class="tags">
+        <li>Python</li><li>Java</li><li>C / C++ / C#</li><li>R</li><li>SQL</li>
+        <li>HTML / CSS / JavaScript / PHP</li><li>Unity</li><li>Unreal Engine</li><li>Excel</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Spoken</h3>
+      <ul class="tags">
+        <li>Maltese <small>native</small></li><li>English <small>C2</small></li><li>Italian <small>A1</small></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SCOUTS -->
+<section class="sec scouts" id="scouts">
+  <div class="scouts__card reveal">
+    <div class="scouts__copy">
+      <h2 class="display">Away from the desk, <em>outdoors</em>.</h2>
+      <p class="sec__sub">Alongside research and photography, I am a member of the Rover Crew at the Naxxar Scout Group.</p>
+      <ul class="chips"><li>Naxxar Scout Group</li><li>Rover Crew</li></ul>
+    </div>
+    <div class="compass" aria-hidden="true">
+      <svg viewBox="-60 -60 120 120">
+        <circle r="58" fill="url(#rim)"/>
+        <circle r="54.5" fill="url(#barrel)"/>
+        <g id="compass-ticks"></g>
+        <g font-family="Funnel Display, system-ui, sans-serif" font-weight="600" font-size="9" text-anchor="middle" dominant-baseline="central">
+          <text y="-37" fill="oklch(76% 0.16 50)">N</text>
+          <text x="37" fill="oklch(100% 0 0 / .8)">E</text>
+          <text y="37" fill="oklch(100% 0 0 / .8)">S</text>
+          <text x="-37" fill="oklch(100% 0 0 / .8)">W</text>
+        </g>
+        <g id="compass-needle">
+          <path d="M0 -29L5 0H-5Z" fill="oklch(56% 0.2 33)"/>
+          <path d="M0 29L5 0H-5Z" fill="oklch(94% 0.01 250)"/>
+          <circle r="3.2" fill="oklch(19% 0.028 258)" stroke="oklch(100% 0 0 / .7)" stroke-width="1"/>
+        </g>
+        <circle r="54.5" fill="none" stroke="oklch(0% 0 0 / .45)" stroke-width="1"/>
+      </svg>
+    </div>
+  </div>
+  <!-- Photos: drop files into assets/scouts/ named scouts-1.jpg to scouts-4.jpg.
+       Missing files remove themselves, and the row stays hidden until at least one photo exists. -->
+  <ul class="scouts__photos" aria-label="Scouting photographs">
+    <li><img src="assets/scouts/scouts-1.jpg" alt="Naxxar Scout Group Rover Crew activity" loading="lazy" decoding="async" onerror="this.parentNode.remove()"></li>
+    <li><img src="assets/scouts/scouts-2.jpg" alt="Naxxar Scout Group Rover Crew activity" loading="lazy" decoding="async" onerror="this.parentNode.remove()"></li>
+    <li><img src="assets/scouts/scouts-3.jpg" alt="Naxxar Scout Group Rover Crew activity" loading="lazy" decoding="async" onerror="this.parentNode.remove()"></li>
+    <li><img src="assets/scouts/scouts-4.jpg" alt="Naxxar Scout Group Rover Crew activity" loading="lazy" decoding="async" onerror="this.parentNode.remove()"></li>
+  </ul>
+</section>
+
+<!-- PHOTOGRAPHY -->
+<section class="photo" id="photography">
+  <div class="photo__inner">
+    <div class="photo__aside">
+      <h2 class="display reveal">Professional <em>photography</em>.</h2>
+      <p class="sec__sub reveal">GB Photography is my photography business in the Maltese Islands, covering events, portraits, travel, landscape, product and sports. It started as a hobby and became a way of telling stories.</p>
+      <!-- The CTA is sticky inside this column, so it travels with the reader down to the end of the section -->
+      <div class="photo__cta">
+        <a class="btn btn--light reveal" href="https://gborgphotography.com" target="_blank" rel="noopener" data-magnetic>
+          Visit gborgphotography.com
+          <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <ul class="sheet" aria-label="Photography categories">
+      <li><a class="frame frame--event" href="https://gborgphotography.com/eventphotography.html" target="_blank" rel="noopener"><img src="assets/photos/events.jpg" alt="" width="800" height="1000" loading="lazy" decoding="async" onerror="this.remove()"><span class="frame__label">Events</span></a></li>
+      <li><a class="frame frame--portrait" href="https://gborgphotography.com/portraitphotography.html" target="_blank" rel="noopener"><img src="assets/photos/portraits.jpg" alt="" width="800" height="1000" loading="lazy" decoding="async" onerror="this.remove()"><span class="frame__label">Portraits</span></a></li>
+      <li><a class="frame frame--travel" href="https://gborgphotography.com/travelphotography.html" target="_blank" rel="noopener"><img src="assets/photos/travel.jpg" alt="" width="800" height="1000" loading="lazy" decoding="async" onerror="this.remove()"><span class="frame__label">Travel</span></a></li>
+      <li><a class="frame frame--landscape" href="https://gborgphotography.com/landscapephotography.html" target="_blank" rel="noopener"><img src="assets/photos/landscape.jpg" alt="" width="800" height="1000" loading="lazy" decoding="async" onerror="this.remove()"><span class="frame__label">Landscape</span></a></li>
+      <li><a class="frame frame--product" href="https://gborgphotography.com/productphotography.html" target="_blank" rel="noopener"><img src="assets/photos/product.jpg" alt="" width="800" height="1000" loading="lazy" decoding="async" onerror="this.remove()"><span class="frame__label">Product</span></a></li>
+      <li><a class="frame frame--sports" href="https://gborgphotography.com/sportphotography.html" target="_blank" rel="noopener"><img src="assets/photos/sports.jpg" alt="" width="800" height="1000" loading="lazy" decoding="async" onerror="this.remove()"><span class="frame__label">Sports</span></a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec contact" id="contact">
+  <h2 class="display display--xl reveal">Let&rsquo;s talk.</h2>
+  <p class="sec__sub reveal">Open to research collaborations and roles in applied AI, immersive learning and data.</p>
+  <!-- "Get in touch" scrolls here, then autofocus brackets lock onto the address -->
+  <div class="af" id="af">
+    <a class="mail reveal" href="mailto:gabrielborg20@gmail.com" data-magnetic>gabrielborg20@gmail.com</a>
+    <span class="af__c af__c--tl" aria-hidden="true"></span><span class="af__c af__c--tr" aria-hidden="true"></span>
+    <span class="af__c af__c--bl" aria-hidden="true"></span><span class="af__c af__c--br" aria-hidden="true"></span>
+    <span class="af__dot" aria-hidden="true"></span>
+  </div>
+  <div class="contact__links reveal">
+    <a href="https://www.um.edu.mt/profile/gabrielborg" target="_blank" rel="noopener">University of Malta profile<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
+    <a href="https://gborgphotography.com" target="_blank" rel="noopener">GB Photography<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <span>&copy; <span id="year">2026</span> Gabriel Borg</span>
+  <span>Naxxar, Malta</span>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
