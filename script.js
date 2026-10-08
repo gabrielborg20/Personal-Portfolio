@@ -127,7 +127,7 @@
     if (shown !== lastShown && fVal) { fVal.textContent = shown; lastShown = shown; }
     fstop && fstop.classList.toggle('is-dim', y < innerHeight * 0.35 || y > max - 140);
     // nav hides on scroll-down, returns on scroll-up
-    if (nav) nav.classList.toggle('is-hidden', y > lastY + 4 && y > 240 ? true : (y < lastY - 4 ? false : nav.classList.contains('is-hidden')));
+    if (nav && !nav.classList.contains('is-open')) nav.classList.toggle('is-hidden', y > lastY + 4 && y > 240 ? true : (y < lastY - 4 ? false : nav.classList.contains('is-hidden')));
     lastY = y;
     // lens drifts up slightly as the hero leaves
     if (lens) state.ty = -heroP * 60;
@@ -187,14 +187,18 @@
     const tl = $('#timeline'), fill = $('#timeline-fill');
     if (!tl || !fill) return;
     const roles = $$('.role', tl);
+    let queued = false;
     const update = () => {
-      const r = tl.getBoundingClientRect();
-      const p = clamp((innerHeight * 0.62 - r.top) / r.height, 0, 1);
-      fill.style.setProperty('--p', p.toFixed(4));
-      roles.forEach(n => n.classList.toggle('is-in', n.getBoundingClientRect().top < innerHeight * 0.62));
+      queued = false;
+      const line = innerHeight * 0.62;
+      const r = tl.getBoundingClientRect();                       // reads...
+      const tops = roles.map(n => n.getBoundingClientRect().top);
+      fill.style.setProperty('--p', clamp((line - r.top) / r.height, 0, 1).toFixed(4));   // ...then writes
+      roles.forEach((n, i) => n.classList.toggle('is-in', tops[i] < line));
     };
-    addEventListener('scroll', update, { passive: true });
-    addEventListener('resize', update);
+    const request = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+    addEventListener('scroll', request, { passive: true });
+    addEventListener('resize', request);
     update();
   }
 
@@ -230,12 +234,14 @@
 
   /* ---------- Active nav link ---------- */
   function setupNavState() {
-    const links = $$('.nav__links a');
-    const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+    const links = $$('.nav__links a, .menu a');
+    const map = new Map();
+    links.forEach(a => { const id = a.getAttribute('href').slice(1); map.set(id, [...(map.get(id) || []), a]); });
     if (!('IntersectionObserver' in window)) return;
     const io = new IntersectionObserver(es => es.forEach(e => {
-      const a = map.get(e.target.id);
-      if (a) a.setAttribute('aria-current', e.isIntersecting ? 'true' : 'false');
+      (map.get(e.target.id) || []).forEach(a => {
+        if (e.isIntersecting) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+      });
     }), { rootMargin: '-45% 0px -50% 0px' });
     map.forEach((_, id) => { const s = document.getElementById(id); s && io.observe(s); });
   }
@@ -251,6 +257,26 @@
   }
 
   /* ---------- Only animate what is on screen ---------- */
+  function loopControl(root, start, stop) {
+    const btn = root.closest('.project__art')?.querySelector('.art__pause');
+    let visible = false, paused = false, running = false;
+    const sync = () => {
+      const want = visible && !paused && !document.hidden;
+      if (want && !running) { running = true; start(); }
+      else if (!want && running) { running = false; stop(); }
+    };
+    if (btn) btn.addEventListener('click', () => {
+      paused = !paused;
+      btn.setAttribute('aria-pressed', String(paused));
+      const label = paused ? 'Play animation' : 'Pause animation';
+      btn.setAttribute('aria-label', label); btn.title = label;
+      sync();
+    });
+    document.addEventListener('visibilitychange', sync);
+    whenVisible(root, v => { visible = v; sync(); });
+  }
+  const hidePause = root => { const b = root.closest('.project__art')?.querySelector('.art__pause'); if (b) b.hidden = true; };
+
   function whenVisible(node, onChange) {
     if (!('IntersectionObserver' in window)) { onChange(true); return; }
     new IntersectionObserver(es => es.forEach(e => onChange(e.isIntersecting)), { rootMargin: '80px 0px' }).observe(node);
@@ -318,7 +344,7 @@
       buoy.setAttribute('transform', `translate(17 ${by.toFixed(2)}) rotate(${(Math.sin(time * 1.1) * 5).toFixed(2)})`);
     }
 
-    if (reduce) { draw(1.2); return; }
+    if (reduce) { draw(1.2); hidePause(root); return; }
     let on = false, id = 0, t0 = performance.now(), tilt = [0, 0];
     function loop(now) {
       draw((now - t0) / 1000);
@@ -328,10 +354,7 @@
       if (on) id = requestAnimationFrame(loop);
     }
     draw(0);
-    whenVisible(root, v => {
-      if (v && !on) { on = true; id = requestAnimationFrame(loop); }
-      else if (!v) { on = false; cancelAnimationFrame(id); }
-    });
+    loopControl(root, () => { on = true; id = requestAnimationFrame(loop); }, () => { on = false; cancelAnimationFrame(id); });
   }
 
   /* ---------- Research: the RSO pipeline ----------
@@ -448,6 +471,7 @@
       // a still frame of one forward pass, so the picture still reads
       fire(0, 1, 1); nodes[1].forEach((_, j) => fire(1, j, .3 + .15 * j)); nodes[2].forEach((_, j) => fire(2, j, .7 - .1 * j)); fire(3, 1, 1);
       draw(0, 0);
+      hidePause(root);
       return;
     }
     draw(0, 0);
@@ -458,10 +482,9 @@
       draw(clock, dt);
       if (on) id = requestAnimationFrame(loop);
     }
-    whenVisible(root, v => {
-      if (v && !on) { on = true; last = 0; id = requestAnimationFrame(loop); langTimer = setInterval(swapLang, 1400); }
-      else if (!v && on) { on = false; cancelAnimationFrame(id); clearInterval(langTimer); }
-    });
+    loopControl(root,
+      () => { on = true; last = 0; id = requestAnimationFrame(loop); langTimer = setInterval(swapLang, 1400); },
+      () => { on = false; cancelAnimationFrame(id); clearInterval(langTimer); });
   }
 
   /* ---------- Scouts: a compass that points at your cursor ----------
@@ -506,7 +529,7 @@
     function loop() {
       vel = (vel + (unwrap(target(), ang) - ang) * .018) * .9;
       ang += vel;
-      set(ang + Math.sin(performance.now() / 900) * .8);   // a living needle never sits perfectly still
+      set(ang);
       if (on) id = requestAnimationFrame(loop);
     }
     whenVisible(sec, v => {
@@ -578,8 +601,47 @@
     sys.addEventListener ? sys.addEventListener('change', onSystem) : sys.addListener(onSystem);
   }
 
+  /* ---------- Mobile menu ----------
+     Opens from the burger; closes on a link, Escape, a tap outside, or widening past the
+     breakpoint. Focus moves into the list on open and back to the burger on close. */
+  function setupMenu() {
+    const burger = $('#burger'), menu = $('#menu'), scrim = $('#scrim');
+    if (!burger || !menu || !nav) return;
+    const wide = matchMedia('(min-width: 62.0625rem)');
+    const links = $$('a', menu);
+    links.forEach((a, i) => a.style.setProperty('--d', (0.04 + i * 0.035) + 's'));
+    const isOpen = () => nav.classList.contains('is-open');
+    function set(open, { focus = true } = {}) {
+      if (open === isOpen()) return;
+      nav.classList.toggle('is-open', open);
+      nav.classList.remove('is-hidden');
+      scrim.classList.toggle('is-on', open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      menu.inert = !open;
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+      if (open && focus) setTimeout(() => (links.find(a => a.hasAttribute('aria-current')) || links[0]).focus({ preventScroll: true }), 60);
+      if (!open && focus) burger.focus({ preventScroll: true });
+    }
+    burger.addEventListener('click', () => set(!isOpen()));
+    scrim.addEventListener('click', () => set(false));
+    links.forEach(a => a.addEventListener('click', () => set(false, { focus: false })));
+    addEventListener('keydown', e => {
+      if (!isOpen()) return;
+      if (e.key === 'Escape') { e.preventDefault(); set(false); }
+      if (e.key === 'Tab') {                                  // keep Tab inside the open menu
+        const ring = [burger, ...links];
+        const i = ring.indexOf(document.activeElement);
+        if (e.shiftKey && i <= 0) { e.preventDefault(); ring[ring.length - 1].focus(); }
+        else if (!e.shiftKey && i === ring.length - 1) { e.preventDefault(); ring[0].focus(); }
+      }
+    });
+    const onWide = e => { if (e.matches) set(false, { focus: false }); };
+    wide.addEventListener ? wide.addEventListener('change', onWide) : wide.addListener(onWide);
+  }
+
   /* ---------- Init ---------- */
-  setupTheme();
+  setupTheme(); setupMenu();
   const yr = $('#year'); if (yr) yr.textContent = new Date().getFullYear();
   drawLens(0); drawMini(1);
   setupReveal(); setupTimeline(); setupSpotlight(); setupMagnetic(); setupNavState(); setupTilt(); setupPipe(); setupVR(); setupCompass(); setupFocusContact();

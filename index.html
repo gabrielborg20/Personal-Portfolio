@@ -33,7 +33,7 @@
 
 <!-- Floating nav -->
 <header class="nav" id="nav">
-  <a class="nav__brand" href="#top" aria-label="Gabriel Borg, back to top">
+  <a class="nav__brand" href="#top" aria-label="Gabriel Borg, back to top" translate="no">
     <svg class="nav__mark" viewBox="-50 -50 100 100" aria-hidden="true"><g id="mark-iris"></g></svg>
     <span>Gabriel Borg</span>
   </a>
@@ -106,9 +106,28 @@
         <path class="dial__index" d="M-5.5 -51H5.5L0 -42.5Z"/>
       </svg>
     </button>
-    <a class="btn btn--small" href="#contact" data-focus-contact>Get in touch</a>
+    <a class="btn btn--small" href="#contact" data-focus-contact>Get in Touch</a>
+    <!-- Phones and tablets: the section links live behind this button -->
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="menu" id="menu" inert>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#research">Research<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a></li>
+        <li><a href="#publications">Publications<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a></li>
+        <li><a href="#experience">Experience<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a></li>
+        <li><a href="#education">Education<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a></li>
+        <li><a href="#scouts">Scouts<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a></li>
+        <li><a href="#photography">Photography<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a></li>
+        <li><a href="#contact">Contact<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a></li>
+      </ul>
+    </nav>
   </div>
 </header>
+<div class="scrim" id="scrim" aria-hidden="true"></div>
 
 <!-- Scroll-driven f-stop readout -->
 <div class="fstop" id="fstop" aria-hidden="true">
@@ -121,7 +140,7 @@
 <!-- HERO -->
 <section class="hero" id="top">
   <div class="hero__copy">
-    <h1 class="hero__name" aria-label="Gabriel Borg">
+    <h1 class="hero__name" aria-label="Gabriel Borg" translate="no">
       <span class="line"><span class="line__in">Gabriel</span></span>
       <span class="line"><span class="line__in">Borg</span></span>
     </h1>
@@ -129,9 +148,9 @@
       Interested in <em>AI, technology and innovation</em>. Research Support Officer at the University of Malta, photographer and scout.
     </p>
     <div class="hero__cta reveal">
-      <a class="btn btn--primary" href="#contact" data-focus-contact data-magnetic>Get in touch</a>
+      <a class="btn btn--primary" href="#contact" data-focus-contact data-magnetic>Get in Touch</a>
       <a class="btn btn--ghost" href="https://gborgphotography.com" target="_blank" rel="noopener">
-        View photography
+        View Photography
         <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg>
       </a>
     </div>
@@ -193,6 +212,7 @@
   <div class="projects">
     <article class="project reveal" data-spot>
       <div class="project__art">
+        <button class="art__pause" type="button" aria-pressed="false" aria-label="Pause animation" title="Pause animation"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="art__i-pause" d="M5 3.5v9M11 3.5v9"/><path class="art__i-play" d="M5 3.2v9.6L12.6 8Z"/></svg></button>
         <!-- ACCLAIMED: one lesson in, through a neural network, out as slides, video, assessment and VR, in any language -->
         <div class="pipe" id="pipe" aria-hidden="true">
           <svg viewBox="-160 -100 320 200" class="pipe__svg">
@@ -284,7 +304,7 @@
         </div>
       </div>
       <div class="project__body">
-        <h3>Project ACCLAIMED</h3>
+        <h3>Project <span translate="no">ACCLAIMED</span></h3>
         <p class="project__tag">AI Content Cloning for Language-Agnostic Media for Education Democratisation</p>
         <p>A content generation tool that lets educators create slides, videos and assessments for educational settings.</p>
       </div>
@@ -293,6 +313,7 @@
 
     <article class="project project--feature reveal" data-spot>
       <div class="project__art">
+        <button class="art__pause" type="button" aria-pressed="false" aria-label="Pause animation" title="Pause animation"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="art__i-pause" d="M5 3.5v9M11 3.5v9"/><path class="art__i-play" d="M5 3.2v9.6L12.6 8Z"/></svg></button>
         <!-- WAVE: stereo VR view, the hero's lens doubled into a headset looking out to sea -->
         <div class="vr" id="vr" aria-hidden="true">
           <svg viewBox="-160 -96 320 192" class="vr__svg">
@@ -334,7 +355,7 @@
         </div>
       </div>
       <div class="project__body">
-        <h3>Project WAVE</h3>
+        <h3>Project <span translate="no">WAVE</span></h3>
         <p class="project__tag">Water rescue and Artificial Intelligence within a Virtual reality Environment</p>
         <p>A VR simulation of Maltese beaches developed in Unreal Engine and paired with Generative and Explainable AI, providing realistic water rescue scenarios that can be used for training.</p>
       </div>
@@ -346,7 +367,7 @@
 <!-- PUBLICATIONS -->
 <section class="sec" id="publications">
   <div class="sec__head">
-    <h2 class="display reveal">Published work.</h2>
+    <h2 class="display reveal">Published Work.</h2>
     <p class="sec__sub reveal">Three peer-reviewed conference papers from 2025.</p>
   </div>
 
@@ -408,7 +429,7 @@
     <article class="role role--minor reveal">
       <div class="role__when">2020 <i>to</i> 2022</div>
       <div class="role__body">
-        <h3>Student internships</h3>
+        <h3>Student Internships</h3>
         <p class="role__org">University of Malta, Malta Digital Innovation Authority, RSM Malta</p>
         <p>Three summer placements across video editing and game design (2020), data analysis (2021), and web scraping with database entry (2022).</p>
       </div>
@@ -419,8 +440,8 @@
 <!-- EDUCATION -->
 <section class="sec" id="education">
   <div class="sec__head">
-    <h2 class="display reveal">Two degrees, one subject.</h2>
-    <p class="sec__sub reveal">Artificial Intelligence at the University of Malta, from the bachelor's through to the master's.</p>
+    <h2 class="display reveal">Two Degrees, One Subject.</h2>
+    <p class="sec__sub reveal">Artificial Intelligence at the University of Malta, from the bachelor&rsquo;s through to the master&rsquo;s.</p>
   </div>
 
   <div class="degrees">
@@ -440,7 +461,7 @@
 
   <div class="toolkit reveal">
     <div>
-      <h3>Languages &amp; tools</h3>
+      <h3>Languages &amp; Tools</h3>
       <ul class="tags">
         <li>Python</li><li>Java</li><li>C / C++ / C#</li><li>R</li><li>SQL</li>
         <li>HTML / CSS / JavaScript / PHP</li><li>Unity</li><li>Unreal Engine</li><li>Excel</li>
@@ -459,7 +480,7 @@
 <section class="sec scouts" id="scouts">
   <div class="scouts__card reveal">
     <div class="scouts__copy">
-      <h2 class="display">Away from the desk, <em>outdoors</em>.</h2>
+      <h2 class="display">Away from the Desk, <em>Outdoors</em>.</h2>
       <p class="sec__sub">Alongside research and photography, I am a member of the Rover Crew at the Naxxar Scout Group.</p>
       <ul class="chips"><li>Naxxar Scout Group</li><li>Rover Crew</li></ul>
     </div>
@@ -486,10 +507,10 @@
   <!-- Photos: drop files into assets/scouts/ named scouts-1.jpg to scouts-4.jpg.
        Missing files remove themselves, and the row stays hidden until at least one photo exists. -->
   <ul class="scouts__photos" aria-label="Scouting photographs">
-    <li><img src="assets/scouts/scouts-1.jpg" alt="Naxxar Scout Group Rover Crew activity" loading="lazy" decoding="async" onerror="this.parentNode.remove()"></li>
-    <li><img src="assets/scouts/scouts-2.jpg" alt="Naxxar Scout Group Rover Crew activity" loading="lazy" decoding="async" onerror="this.parentNode.remove()"></li>
-    <li><img src="assets/scouts/scouts-3.jpg" alt="Naxxar Scout Group Rover Crew activity" loading="lazy" decoding="async" onerror="this.parentNode.remove()"></li>
-    <li><img src="assets/scouts/scouts-4.jpg" alt="Naxxar Scout Group Rover Crew activity" loading="lazy" decoding="async" onerror="this.parentNode.remove()"></li>
+    <li><img src="assets/scouts/scouts-1.jpg" alt="Naxxar Scout Group Rover Crew activity" loading="lazy" width="1200" height="900" decoding="async" onerror="this.parentNode.remove()"></li>
+    <li><img src="assets/scouts/scouts-2.jpg" alt="Naxxar Scout Group Rover Crew activity" loading="lazy" width="1200" height="900" decoding="async" onerror="this.parentNode.remove()"></li>
+    <li><img src="assets/scouts/scouts-3.jpg" alt="Naxxar Scout Group Rover Crew activity" loading="lazy" width="1200" height="900" decoding="async" onerror="this.parentNode.remove()"></li>
+    <li><img src="assets/scouts/scouts-4.jpg" alt="Naxxar Scout Group Rover Crew activity" loading="lazy" width="1200" height="900" decoding="async" onerror="this.parentNode.remove()"></li>
   </ul>
 </section>
 
@@ -497,12 +518,12 @@
 <section class="photo" id="photography">
   <div class="photo__inner">
     <div class="photo__aside">
-      <h2 class="display reveal">Professional <em>photography</em>.</h2>
-      <p class="sec__sub reveal">GB Photography is my photography business in the Maltese Islands, covering events, portraits, travel, landscape, product and sports. It started as a hobby and became a way of telling stories.</p>
+      <h2 class="display reveal">Professional <em>Photography</em>.</h2>
+      <p class="sec__sub reveal"><span translate="no">GB Photography</span> is my photography business in the Maltese Islands, covering events, portraits, travel, landscape, product and sports. It started as a hobby and became a way of telling stories.</p>
       <!-- The CTA is sticky inside this column, so it travels with the reader down to the end of the section -->
       <div class="photo__cta">
         <a class="btn btn--light reveal" href="https://gborgphotography.com" target="_blank" rel="noopener" data-magnetic>
-          Visit gborgphotography.com
+          <span>Visit <span translate="no">gborgphotography.com</span></span>
           <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg>
         </a>
       </div>
@@ -521,25 +542,25 @@
 
 <!-- CONTACT -->
 <section class="sec contact" id="contact">
-  <h2 class="display display--xl reveal">Let&rsquo;s talk.</h2>
+  <h2 class="display display--xl reveal">Let&rsquo;s Talk.</h2>
   <p class="sec__sub reveal">Open to research collaborations and roles in applied AI, immersive learning and data.</p>
   <!-- "Get in touch" scrolls here, then autofocus brackets lock onto the address -->
   <div class="af" id="af">
-    <a class="mail reveal" href="mailto:gabrielborg20@gmail.com" data-magnetic>gabrielborg20@gmail.com</a>
+    <a class="mail reveal" href="mailto:gabrielborg20@gmail.com" data-magnetic translate="no">gabrielborg20@gmail.com</a>
     <span class="af__c af__c--tl" aria-hidden="true"></span><span class="af__c af__c--tr" aria-hidden="true"></span>
     <span class="af__c af__c--bl" aria-hidden="true"></span><span class="af__c af__c--br" aria-hidden="true"></span>
     <span class="af__dot" aria-hidden="true"></span>
   </div>
   <div class="contact__links reveal">
     <a href="https://www.um.edu.mt/profile/gabrielborg" target="_blank" rel="noopener">University of Malta profile<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
-    <a href="https://gborgphotography.com" target="_blank" rel="noopener">GB Photography<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
+    <a href="https://gborgphotography.com" target="_blank" rel="noopener"><span translate="no">GB Photography</span><svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
   </div>
 </section>
 
 </main>
 
 <footer class="foot">
-  <span>&copy; <span id="year">2026</span> Gabriel Borg</span>
+  <span>&copy; <span id="year">2026</span> <span translate="no">Gabriel Borg</span></span>
   <span>Naxxar, Malta</span>
 </footer>
 
