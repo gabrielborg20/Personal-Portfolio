@@ -495,6 +495,7 @@ a:hover > .arrow, .btn:hover .arrow { transform: translate(2px, -2px); }
 .pub__venue { font-weight: 600; font-size: .9375rem; }
 .pub__venue span { display: block; font-weight: 400; color: var(--ink-3); font-size: .875rem; margin-top: .15rem; }
 .pub h3 { font-size: clamp(1.25rem, 2vw, 1.65rem); margin-bottom: .45rem; text-wrap: balance; }
+.pub .me { color: var(--ink); font-weight: 600; }
 .pub p { color: var(--ink-3); font-size: .9375rem; text-wrap: pretty; }
 .pub__link { display: inline-flex; align-items: center; gap: .35rem; font-weight: 500; font-size: .9375rem; padding: .5rem .9rem; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); transition: background-color .25s ease, color .25s ease, box-shadow .25s ease; white-space: nowrap; }
 .pub__links { display: flex; gap: .4rem; flex-wrap: wrap; justify-content: flex-end; }
@@ -671,6 +672,21 @@ a.pub__link:hover { background: var(--btn-bg); color: var(--btn-fg); box-shadow:
 }
 @keyframes af-dot { 0%, 44% { opacity: 0; scale: .2; } 50%, 86% { opacity: 1; scale: 1; } 100% { opacity: 0; } }
 
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Copy the address: for visitors without a mail app set up */
+.copy-mail {
+  display: inline-flex; align-items: center; gap: .45rem;
+  min-height: 2.75rem; padding: 0 1.1rem; border: 0; border-radius: 999px;
+  background: var(--ghost-bg); color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--line);
+  font: 500 .9375rem/1 var(--body); cursor: pointer;
+  transition: color .25s ease, background-color .25s ease;
+}
+.copy-mail:hover { color: var(--ink); background: var(--tint); }
+.copy-mail:focus-visible { outline: 2px solid var(--safelight); outline-offset: 3px; }
+.copy-mail svg { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.copy-mail.is-done { color: var(--safelight-ink); }
+
 .contact__links { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem 2rem; margin-top: .5rem; }
 .contact__links a { display: inline-flex; gap: .35rem; align-items: center; color: var(--ink-2); font-weight: 500; border-bottom: 1px solid var(--line); padding-bottom: .15rem; transition: color .25s ease, border-color .25s ease; }
 .contact__links a:hover { color: var(--ink); border-color: var(--ink); }
@@ -680,7 +696,36 @@ a.pub__link:hover { background: var(--btn-bg); color: var(--btn-fg); box-shadow:
   display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
   padding: 1.5rem var(--gutter) max(2rem, env(safe-area-inset-bottom)); max-width: calc(var(--max) + var(--gutter) * 2); margin-inline: auto;
   color: var(--ink-3); font-size: .875rem; border-top: 1px solid var(--line);
+  align-items: center;
 }
+.foot__link {
+  padding: .5rem 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer;
+  text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: .25em;
+  transition: color .2s ease, text-decoration-color .2s ease;
+}
+.foot__link:hover { color: var(--ink); text-decoration-color: currentColor; }
+.foot__link:focus-visible { outline: 2px solid var(--safelight); outline-offset: 2px; border-radius: 4px; }
+
+/* ---------- Analytics consent ----------
+   A quiet card in the nav's frosted material, bottom-left so it never covers the f-stop readout. */
+.consent {
+  position: fixed; z-index: 60;
+  left: max(clamp(.75rem, 2vw, 1.5rem), env(safe-area-inset-left)); bottom: max(clamp(.75rem, 2vw, 1.5rem), env(safe-area-inset-bottom));
+  width: min(23rem, calc(100vw - 1.5rem));
+  padding: 1.1rem 1.15rem 1.15rem; border-radius: 1.35rem;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(22px) saturate(180%); backdrop-filter: blur(22px) saturate(180%);
+  box-shadow: inset 0 0 0 1px var(--glass-edge), 0 0 0 1px var(--tint-2), 0 24px 50px -16px color-mix(in oklch, var(--shade) min(100%, calc(35% * var(--shade-k))), transparent);
+  opacity: 0; transform: translateY(.75rem);
+  transition: opacity .35s ease, transform .5s var(--ease);
+}
+.consent.is-in { opacity: 1; transform: none; }
+.consent[hidden] { display: none; }
+.consent__title { font-size: 1rem; letter-spacing: -0.01em; margin-bottom: .35rem; }
+.consent__text { color: var(--ink-2); font-size: .9375rem; line-height: 1.45; text-wrap: pretty; }
+.consent__actions { display: flex; gap: .5rem; margin-top: .9rem; }
+.consent__btn { flex: 1; justify-content: center; }
+html.has-consent .fstop { opacity: 0; pointer-events: none; }
 
 /* ---------- Night details ---------- */
 :root[data-theme="dark"] .fstop { box-shadow: inset 0 0 0 1px oklch(100% 0 0 / .1), 0 10px 30px -10px oklch(0% 0 0 / .6); }
@@ -738,6 +783,7 @@ a.pub__link:hover { background: var(--btn-bg); color: var(--btn-fg); box-shadow:
   .dial__rot { transition: none; }
   .dial:hover .dial__rot, :root[data-theme="dark"] .dial:hover .dial__rot { rotate: none; }
   .dial.is-click svg { animation: none; }
+  .consent { transition: opacity .2s ease; transform: none; }
   .menu, .nav.is-open .menu, .menu a, .nav.is-open .menu a, .burger span { transition: opacity .15s ease, visibility 0s; transform: none; }
   .nav.is-open .burger span:nth-child(1) { transform: rotate(45deg); }
   .nav.is-open .burger span:nth-child(3) { transform: rotate(-45deg); }
@@ -749,7 +795,7 @@ a.pub__link:hover { background: var(--btn-bg); color: var(--btn-fg); box-shadow:
 }
 @keyframes af-still { 0%, 80% { opacity: 1; border-color: var(--safelight); } 100% { opacity: 0; border-color: var(--safelight); } }
 @media (prefers-reduced-transparency: reduce) {
-  .nav, .menu { background: var(--card); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .nav, .menu, .consent { background: var(--card); -webkit-backdrop-filter: none; backdrop-filter: none; }
   .scrim { -webkit-backdrop-filter: none; backdrop-filter: none; }
   .fstop { background: oklch(19% .028 258); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }

@@ -640,8 +640,94 @@
     wide.addEventListener ? wide.addEventListener('change', onWide) : wide.addListener(onWide);
   }
 
+  /* ---------- Analytics consent ----------
+     Google Analytics never loads until the visitor chooses "Allow". Declining (or withdrawing
+     later via "Cookie Settings" in the footer) disables it and clears its cookies. */
+  const GA_ID = 'G-MNHCLKSD61';
+  function setupConsent() {
+    const box = $('#consent'), settings = $('#cookie-settings');
+    if (!box) return;
+    const KEY = 'analytics-consent';
+    const read = () => { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
+    const write = v => { try { localStorage.setItem(KEY, v); } catch (e) {} };
+    let loaded = false;
+    function loadGA() {
+      window['ga-disable-' + GA_ID] = false;
+      if (loaded) return;
+      loaded = true;
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+      gtag('js', new Date());
+      gtag('config', GA_ID);
+      const s = document.createElement('script');
+      s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+      document.head.appendChild(s);
+    }
+    function stopGA() {
+      window['ga-disable-' + GA_ID] = true;
+      const host = location.hostname, parts = host.split('.');
+      const domains = ['', host, '.' + host, parts.length > 1 ? '.' + parts.slice(-2).join('.') : ''];
+      document.cookie.split(';').map(x => x.split('=')[0].trim()).filter(n => /^_ga/.test(n)).forEach(n => {
+        domains.forEach(d => { document.cookie = n + '=; Max-Age=0; path=/' + (d ? '; domain=' + d : ''); });
+      });
+    }
+    let opener = null;
+    function show(fromSettings) {
+      opener = fromSettings ? settings : null;
+      box.hidden = false;
+      document.documentElement.classList.add('has-consent');
+      requestAnimationFrame(() => box.classList.add('is-in'));
+      if (fromSettings) $('.consent__btn', box).focus({ preventScroll: true });
+    }
+    function hide() {
+      box.classList.remove('is-in');
+      document.documentElement.classList.remove('has-consent');
+      setTimeout(() => { box.hidden = true; }, reduce ? 0 : 350);
+      if (opener) opener.focus({ preventScroll: true });
+    }
+    $$('[data-consent]', box).forEach(b => b.addEventListener('click', () => {
+      const v = b.getAttribute('data-consent');
+      write(v);
+      if (v === 'granted') loadGA(); else stopGA();
+      hide();
+    }));
+    box.addEventListener('keydown', e => { if (e.key === 'Escape' && read()) hide(); });
+    if (settings) settings.addEventListener('click', () => show(true));
+    const choice = read();
+    if (choice === 'granted') loadGA();
+    else if (!choice) setTimeout(() => show(false), 1200);   // after the hero has opened, not over it
+  }
+
+  /* ---------- Copy email ----------
+     For visitors whose browser has no mail app set up: copies the address and says so. */
+  function setupCopyMail() {
+    const btn = $('#copy-mail'), status = $('#copy-status');
+    if (!btn) return;
+    const label = $('.copy-mail__label', btn);
+    const email = btn.getAttribute('data-email');
+    let t = 0;
+    const done = ok => {
+      label.textContent = ok ? 'Copied' : 'Press Ctrl+C to copy';
+      btn.classList.toggle('is-done', ok);
+      if (status) status.textContent = ok ? 'Email address copied to the clipboard.' : 'Could not copy automatically.';
+      clearTimeout(t);
+      t = setTimeout(() => { label.textContent = 'Copy Email'; btn.classList.remove('is-done'); if (status) status.textContent = ''; }, 2200);
+    };
+    const fallback = () => {
+      const ta = document.createElement('textarea');
+      ta.value = email; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      let ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+      ta.remove(); done(ok);
+    };
+    btn.addEventListener('click', () => {
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(email).then(() => done(true), fallback);
+      else fallback();
+    });
+  }
+
   /* ---------- Init ---------- */
-  setupTheme(); setupMenu();
+  setupTheme(); setupMenu(); setupConsent(); setupCopyMail();
   const yr = $('#year'); if (yr) yr.textContent = new Date().getFullYear();
   drawLens(0); drawMini(1);
   setupReveal(); setupTimeline(); setupSpotlight(); setupMagnetic(); setupNavState(); setupTilt(); setupPipe(); setupVR(); setupCompass(); setupFocusContact();

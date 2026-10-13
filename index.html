@@ -26,17 +26,8 @@
     if (m) m.content = dark ? '#090e16' : '#f4f6f8';
   })();
 </script>
-<!-- Adding Google tag (gtag.js) - Google Analytics -->
+<!-- Google Analytics (G-MNHCLKSD61) loads from script.js only after the visitor allows it; see setupConsent() -->
 </head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MNHCLKSD61"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-MNHCLKSD61');
-</script>
 <body>
 
 <a class="skip" href="#main">Skip to content</a>
@@ -386,7 +377,7 @@
       <div class="pub__venue">ICERI 2025 <span>Seville, Spain</span></div>
       <div class="pub__main">
         <h3>Advancing experiential learning through generative AI-powered virtual reality</h3>
-        <p>G. Borg, K. Azzopardi, K. Cini, L. Cardona, R. Caruana, V. Camilleri, D. Seychell, M. Montebello</p>
+        <p><strong class="me">G. Borg</strong>, K. Azzopardi, K. Cini, L. Cardona, R. Caruana, V. Camilleri, D. Seychell, M. Montebello</p>
       </div>
       <a class="pub__link" href="https://doi.org/10.21125/iceri.2025.0391" target="_blank" rel="noopener">DOI<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
     </li>
@@ -394,7 +385,7 @@
       <div class="pub__venue">ICERI 2025 <span>Seville, Spain</span></div>
       <div class="pub__main">
         <h3>Blending human expertise with generative AI</h3>
-        <p>K. Azzopardi, G. Borg, L. Cassar, V. Camilleri, D. Seychell, M. Montebello</p>
+        <p>K. Azzopardi, <strong class="me">G. Borg</strong>, L. Cassar, V. Camilleri, D. Seychell, M. Montebello</p>
       </div>
       <a class="pub__link" href="https://doi.org/10.21125/iceri.2025.0392" target="_blank" rel="noopener">DOI<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
     </li>
@@ -402,7 +393,7 @@
       <div class="pub__venue">ECEL 2025 <span>European Conference on e-Learning</span></div>
       <div class="pub__main">
         <h3>Leveraging generative AI and audio-visual cloning to democratise digital learning</h3>
-        <p>M. Montebello, K. Azzopardi, G. Borg, K. Cini, D. Seychell, V. Camilleri</p>
+        <p>M. Montebello, K. Azzopardi, <strong class="me">G. Borg</strong>, K. Cini, D. Seychell, V. Camilleri</p>
       </div>
       <a class="pub__link" href="https://doi.org/10.34190/ecel.24.1.4298" target="_blank" rel="noopener">DOI<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
     </li>
@@ -410,7 +401,7 @@
       <div class="pub__venue">SITA 2023 <span>Casablanca, Morocco</span></div>
       <div class="pub__main">
         <h3>Simultaneous localisation and mapping of a mobile robot in a static environment</h3>
-        <p>G. Borg, M. Montebello &middot; Based on my B.Sc. IT (Hons) dissertation</p>
+        <p><strong class="me">G. Borg</strong>, M. Montebello &middot; Based on my B.Sc. IT (Hons) dissertation</p>
       </div>
       <div class="pub__links">
         <a class="pub__link" href="https://doi.org/10.1109/SITA60746.2023.10373594" target="_blank" rel="noopener">DOI<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
@@ -572,10 +563,14 @@
     <span class="af__c af__c--bl" aria-hidden="true"></span><span class="af__c af__c--br" aria-hidden="true"></span>
     <span class="af__dot" aria-hidden="true"></span>
   </div>
+  <button class="copy-mail reveal" id="copy-mail" type="button" data-email="gabrielborg20@gmail.com">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="5" y="5" width="8.5" height="8.5" rx="1.8"/><path d="M10.5 2.5h-6a2 2 0 0 0-2 2v6"/></svg>
+    <span class="copy-mail__label">Copy Email</span>
+  </button>
+  <p class="sr-only" id="copy-status" role="status" aria-live="polite"></p>
   <div class="contact__links reveal">
     <a href="https://www.linkedin.com/in/gabriel-borg-52aa36134/" target="_blank" rel="noopener" translate="no">LinkedIn<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
     <a href="https://www.um.edu.mt/profile/gabrielborg" target="_blank" rel="noopener">University of Malta profile<svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
-    <a href="https://gborgphotography.com" target="_blank" rel="noopener"><span translate="no">GB Photography</span><svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
   </div>
 </section>
 
@@ -583,8 +578,19 @@
 
 <footer class="foot">
   <span>&copy; <span id="year">2026</span> <span translate="no">Gabriel Borg</span></span>
+  <button class="foot__link" id="cookie-settings" type="button">Cookie Settings</button>
   <span>Naxxar, Malta</span>
 </footer>
+
+<!-- Analytics consent: nothing is tracked until "Allow" is chosen; the choice can be changed from the footer -->
+<section class="consent" id="consent" role="region" aria-labelledby="consent-title" hidden>
+  <h2 class="consent__title" id="consent-title">Analytics Cookies</h2>
+  <p class="consent__text">May this site use Google Analytics to count visits? It sets cookies and is off until you allow it.</p>
+  <div class="consent__actions">
+    <button class="btn btn--small consent__btn" type="button" data-consent="granted">Allow</button>
+    <button class="btn btn--small btn--ghost consent__btn" type="button" data-consent="denied">Decline</button>
+  </div>
+</section>
 
 <script src="script.js"></script>
 </body>
