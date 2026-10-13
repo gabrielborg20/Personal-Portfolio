@@ -125,7 +125,7 @@
     const f = lerp(STOPS[lo], STOPS[hi], fIdx - lo);
     const shown = (f < 10 ? f.toFixed(1) : Math.round(f).toString());
     if (shown !== lastShown && fVal) { fVal.textContent = shown; lastShown = shown; }
-    fstop && fstop.classList.toggle('is-dim', y < innerHeight * 0.35 || y > max - 140);
+    if (fstop) { const dim = y < innerHeight * 0.35; fstop.classList.toggle('is-dim', dim); fstop.inert = dim; }   // stays up at the bottom, where 'back to top' is wanted
     // nav hides on scroll-down, returns on scroll-up
     if (nav && !nav.classList.contains('is-open')) nav.classList.toggle('is-hidden', y > lastY + 4 && y > 240 ? true : (y < lastY - 4 ? false : nav.classList.contains('is-hidden')));
     lastY = y;
@@ -726,8 +726,19 @@
     });
   }
 
+  /* ---------- Back to top: the f-stop readout ----------
+     Glides home (the aperture re-opens on the way up); keyboard users land on the name link. */
+  function setupBackToTop() {
+    if (!fstop) return;
+    fstop.addEventListener('click', e => {
+      scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+      if (e.detail === 0) { const brand = $('.nav__brand'); brand && brand.focus({ preventScroll: true }); }
+    });
+  }
+
   /* ---------- Init ---------- */
-  setupTheme(); setupMenu(); setupConsent(); setupCopyMail();
+  setupTheme(); setupMenu(); setupBackToTop(); setupConsent(); setupCopyMail();
   const yr = $('#year'); if (yr) yr.textContent = new Date().getFullYear();
   drawLens(0); drawMini(1);
   setupReveal(); setupTimeline(); setupSpotlight(); setupMagnetic(); setupNavState(); setupTilt(); setupPipe(); setupVR(); setupCompass(); setupFocusContact();

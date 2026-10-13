@@ -323,12 +323,17 @@ a:hover > .arrow, .btn:hover .arrow { transform: translate(2px, -2px); }
   box-shadow: 0 10px 30px -10px oklch(10% .03 258 / .5);
   font: 500 .8125rem/1 var(--body);
   font-variant-numeric: tabular-nums;
-  pointer-events: none;
-  transition: opacity .5s ease, translate .6s var(--ease);
+  border: 0; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity .5s ease, translate .6s var(--ease), transform .3s var(--ease), background-color .25s ease;
 }
+/* Back to top: lifts slightly on hover, presses on click */
+.fstop:hover { transform: translateY(-2px); background: color-mix(in oklch, var(--readout), oklch(40% .03 258) 30%); }
+.fstop:active { transform: scale(.95); transition-duration: .1s; }
+.fstop:focus-visible { outline: 2px solid var(--safelight); outline-offset: 3px; }
 .fstop svg { width: 1.9rem; height: 1.9rem; }
 .fstop__num { letter-spacing: .02em; min-width: 3.6ch; }
-.fstop.is-dim { opacity: 0; translate: 0 1rem; }
+.fstop.is-dim { opacity: 0; translate: 0 1rem; pointer-events: none; }
 
 /* ---------- Hero ---------- */
 .hero {
@@ -694,7 +699,7 @@ a.pub__link:hover { background: var(--btn-bg); color: var(--btn-fg); box-shadow:
 
 .foot {
   display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
-  padding: 1.5rem var(--gutter) max(2rem, env(safe-area-inset-bottom)); max-width: calc(var(--max) + var(--gutter) * 2); margin-inline: auto;
+  padding: 1.5rem var(--gutter) max(5rem, calc(env(safe-area-inset-bottom) + 4rem)); max-width: calc(var(--max) + var(--gutter) * 2); margin-inline: auto;
   color: var(--ink-3); font-size: .875rem; border-top: 1px solid var(--line);
   align-items: center;
 }
