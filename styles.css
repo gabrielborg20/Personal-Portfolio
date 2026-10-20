@@ -293,6 +293,9 @@ a:hover > .arrow, .btn:hover .arrow { transform: translate(2px, -2px); }
   .dial:hover .dial__rot { rotate: -7deg; }                          /* a hint of which way it turns */
   :root[data-theme="dark"] .dial:hover .dial__rot { rotate: 7deg; }
 }
+/* .has-mouse (set by script.js on the first real mouse move) covers browsers that misreport (hover: hover) */
+:root.has-mouse .dial:hover .dial__rot { rotate: -7deg; }
+:root.has-mouse[data-theme="dark"] .dial:hover .dial__rot { rotate: 7deg; }
 .dial.is-click svg { animation: dial-click .32s var(--ease); }
 @keyframes dial-click { 30% { scale: .9; } }
 
@@ -495,6 +498,7 @@ a:hover > .arrow, .btn:hover .arrow { transform: translate(2px, -2px); }
 .pub__links { display: flex; gap: .4rem; flex-wrap: wrap; justify-content: flex-end; }
 a.pub__link:hover { background: var(--btn-bg); color: var(--btn-fg); box-shadow: none; }
 @media (hover: hover) { .pub:hover .pub__venue, .pub:hover .pub__main { transform: translateX(.75rem); } }
+:root.has-mouse .pub:hover .pub__venue, :root.has-mouse .pub:hover .pub__main { transform: translateX(.75rem); }
 
 /* Timeline */
 .timeline { position: relative; display: grid; gap: 3rem; padding-left: clamp(1.5rem, 4vw, 3rem); }

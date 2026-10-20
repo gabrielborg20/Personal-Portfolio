@@ -5,7 +5,12 @@
 
   const NS = 'http://www.w3.org/2000/svg';
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  // Mouse effects key off real mouse events, not the (hover/pointer) media query alone:
+  // some browsers (Opera on Windows, touch-capable laptops) report "no hover" with a mouse attached.
+  // The first mouse move also sets .has-mouse on <html> so the CSS hover rules can follow.
+  const isMouse = e => e.pointerType === 'mouse';
+  const markMouse = e => { if (isMouse(e)) { document.documentElement.classList.add('has-mouse'); removeEventListener('pointermove', markMouse); } };
+  addEventListener('pointermove', markMouse, { passive: true });
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const lerp = (a, b, t) => a + (b - a) * t;
   const $ = (s, r = document) => r.querySelector(s);
@@ -204,9 +209,9 @@
 
   /* ---------- Spotlight on cards (origin-aware glow) ---------- */
   function setupSpotlight() {
-    if (!finePointer) return;
     $$('[data-spot]').forEach(c => {
       c.addEventListener('pointermove', e => {
+        if (!isMouse(e)) return;
         const r = c.getBoundingClientRect();
         c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
         c.style.setProperty('--my', (e.clientY - r.top) + 'px');
@@ -216,9 +221,10 @@
 
   /* ---------- Magnetic buttons with spring release ---------- */
   function setupMagnetic() {
-    if (!finePointer || reduce) return;
+    if (reduce) return;
     $$('[data-magnetic]').forEach(b => {
       b.addEventListener('pointermove', e => {
+        if (!isMouse(e)) return;
         const r = b.getBoundingClientRect();
         const x = (e.clientX - (r.left + r.width / 2)) * 0.22;
         const y = (e.clientY - (r.top + r.height / 2)) * 0.32;
@@ -248,8 +254,9 @@
 
   /* ---------- Pointer parallax on the lens ---------- */
   function setupTilt() {
-    if (!finePointer || reduce) return;
+    if (reduce) return;
     addEventListener('pointermove', e => {
+      if (!isMouse(e)) return;
       state.tiltTarget[0] = (e.clientX / innerWidth - 0.5) * 2;
       state.tiltTarget[1] = (e.clientY / innerHeight - 0.5) * 2;
       if (scrollY < innerHeight) wake();
@@ -519,10 +526,8 @@
       return lastBearing;
     };
     const unwrap = (t, from) => from + ((((t - from) % 360) + 540) % 360 - 180);   // shortest way round
-    if (finePointer) {
-      addEventListener('pointermove', e => { if (e.pointerType === 'mouse') ptr = [e.clientX, e.clientY]; if (reduce) set(target()); }, { passive: true });
-      document.documentElement.addEventListener('pointerleave', () => { ptr = null; if (reduce) set(0); });
-    }
+    addEventListener('pointermove', e => { if (!isMouse(e)) return; ptr = [e.clientX, e.clientY]; if (reduce) set(target()); }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', () => { ptr = null; if (reduce) set(0); });
     if (reduce) { set(0); return; }
     let ang = heading(), vel = 0, on = false, id = 0;
     set(ang);
