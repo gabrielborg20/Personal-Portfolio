@@ -572,11 +572,11 @@
     }));
   }
 
-  /* ---------- Theme: the exposure mode dial ----------
-     Follows the system until the visitor turns the dial; after that their choice is kept.
+  /* ---------- Theme: the sun / moon switch ----------
+     Follows the system until the visitor flips the switch; after that their choice is kept.
      The change runs as a view transition (a short re-exposure) where supported. */
   function setupTheme() {
-    const dial = $('#theme-dial');
+    const toggle = $('#theme-toggle');
     const root = document.documentElement;
     const meta = $('meta[name="theme-color"]');
     const sys = matchMedia('(prefers-color-scheme: dark)');
@@ -584,9 +584,9 @@
     const reflect = () => {
       const dark = root.getAttribute('data-theme') === 'dark';
       if (meta) meta.content = dark ? '#090e16' : '#f4f6f8';
-      if (dial) {
-        dial.setAttribute('aria-checked', String(dark));
-        dial.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
+      if (toggle) {
+        toggle.setAttribute('aria-checked', String(dark));
+        toggle.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
       }
     };
     const apply = (theme, animate) => {
@@ -596,10 +596,9 @@
       else swap();
     };
     reflect();
-    if (dial) dial.addEventListener('click', () => {
+    if (toggle) toggle.addEventListener('click', () => {
       const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       try { localStorage.setItem('theme', next); } catch (e) {}
-      dial.classList.remove('is-click'); void dial.offsetWidth; dial.classList.add('is-click');
       apply(next, true);
     });
     const onSystem = e => { if (!stored()) apply(e.matches ? 'dark' : 'light', true); };

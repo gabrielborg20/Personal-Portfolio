@@ -46,14 +46,12 @@
   --slide: var(--card);
   --scroll-thumb: oklch(75% .015 255);
   --readout: oklch(19% .028 258 / .82);
-  --dial-rim: oklch(91% .008 250); --dial-s1: oklch(99.5% 0 0); --dial-s2: oklch(85% .012 250);
-  --dial-knurl: oklch(45% .02 258 / .45); --dial-glyph: oklch(55% .02 258);
 
   --shadow-soft: 0 1px 2px color-mix(in oklch, var(--shade) min(100%, calc(6% * var(--shade-k))), transparent), 0 8px 24px -8px color-mix(in oklch, var(--shade) min(100%, calc(12% * var(--shade-k))), transparent), 0 24px 48px -24px color-mix(in oklch, var(--shade) min(100%, calc(16% * var(--shade-k))), transparent);
   --shadow-lift: 0 2px 4px color-mix(in oklch, var(--shade) min(100%, calc(6% * var(--shade-k))), transparent), 0 16px 40px -12px color-mix(in oklch, var(--shade) min(100%, calc(20% * var(--shade-k))), transparent), 0 40px 80px -32px color-mix(in oklch, var(--shade) min(100%, calc(24% * var(--shade-k))), transparent);
 }
 
-/* Night: chosen with the exposure dial, or inherited from the system until the visitor chooses */
+/* Night: chosen with the theme switch, or inherited from the system until the visitor chooses */
 :root[data-theme="dark"] {
   color-scheme: dark;
   --ground: oklch(15.5% 0.022 258);
@@ -78,8 +76,6 @@
   --slide: oklch(95% 0.006 250);
   --scroll-thumb: oklch(36% .02 255);
   --readout: oklch(27% .03 258 / .86);
-  --dial-rim: oklch(27% .026 258); --dial-s1: oklch(42% .02 255); --dial-s2: oklch(21% .025 258);
-  --dial-knurl: oklch(85% .01 250 / .32); --dial-glyph: oklch(72% .015 252);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -259,56 +255,38 @@ a:hover > .arrow, .btn:hover .arrow { transform: translate(2px, -2px); }
 }
 .scrim.is-on { opacity: 1; visibility: visible; transition: opacity .3s ease, visibility 0s; }
 
-/* ---------- Exposure mode dial: the theme switch ----------
-   A knurled camera mode dial with two detents. The sun and moon are printed on its face;
-   turning it brings one under the safelight index mark. */
-.dial {
-  position: relative; display: grid; place-items: center; flex: none;
+/* ---------- Theme switch: sun to crescent moon ----------
+   Light: a small disc with eight rays. Dark: the rays retract and spin away, the disc grows,
+   and a masking disc slides in from the top right to carve the crescent. */
+.theme {
+  display: grid; place-items: center; flex: none;
   width: 2.5rem; height: 2.5rem; padding: 0; border: 0; border-radius: 50%;
-  background: none; color: var(--ink); cursor: pointer;
+  background: none; color: var(--ink-2); cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  view-transition-name: theme-dial;
+  transition: background-color .2s ease, color .2s ease;
+  view-transition-name: theme-toggle;
 }
-.dial svg { width: 2.25rem; height: 2.25rem; overflow: visible; transition: scale .15s ease; }
-.dial:active svg { scale: .92; }
-.dial:focus-visible { outline: 2px solid var(--safelight); outline-offset: 2px; border-radius: 50%; }
-.dial__rim { fill: var(--dial-rim); stroke: var(--line); stroke-width: 1.5; }
-.dial__knurl line { stroke: var(--dial-knurl); stroke-width: 1.6; stroke-linecap: round; }
-.dial__s1 { stop-color: var(--dial-s1); }
-.dial__s2 { stop-color: var(--dial-s2); }
-.dial__face { stroke: color-mix(in oklch, var(--shade) min(100%, calc(18% * var(--shade-k))), transparent); stroke-width: 1; }
-.dial__hub { fill: var(--dial-rim); stroke: var(--dial-knurl); stroke-width: 1.2; }
-.dial__index { fill: var(--safelight); }
-.dial__sun, .dial__moon { color: var(--dial-glyph); transition: color .4s ease; }
-.dial__sun circle, .dial__moon path { fill: currentColor; }
-.dial__sun line { stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
-:root:not([data-theme="dark"]) .dial__sun, :root[data-theme="dark"] .dial__moon { color: var(--safelight); }
-.dial__rot {
-  transform-box: fill-box; transform-origin: center;
-  transform: rotate(45deg);                   /* day: the sun sits under the index */
-  transition: transform .9s var(--spring), rotate .45s var(--ease);
-}
-:root[data-theme="dark"] .dial__rot { transform: rotate(-45deg); }   /* night: the moon */
-@media (hover: hover) {
-  .dial:hover .dial__rot { rotate: -7deg; }                          /* a hint of which way it turns */
-  :root[data-theme="dark"] .dial:hover .dial__rot { rotate: 7deg; }
-}
-/* .has-mouse (set by script.js on the first real mouse move) covers browsers that misreport (hover: hover) */
-:root.has-mouse .dial:hover .dial__rot { rotate: -7deg; }
-:root.has-mouse[data-theme="dark"] .dial:hover .dial__rot { rotate: 7deg; }
-.dial.is-click svg { animation: dial-click .32s var(--ease); }
-@keyframes dial-click { 30% { scale: .9; } }
+.theme:hover { background: var(--tint); color: var(--ink); }
+.theme:focus-visible { outline: 2px solid var(--safelight); outline-offset: 2px; }
+.theme svg { width: 1.25rem; height: 1.25rem; overflow: visible; transition: scale .15s ease; }
+.theme:active svg { scale: .9; }
+.theme__core { fill: currentColor; transform-box: fill-box; transform-origin: center; transform: scale(.5); transition: transform .6s var(--spring); }
+.theme__cut { transform: translate(10px, -10px); transition: transform .5s var(--ease); }
+.theme__rays { stroke: currentColor; stroke-width: 2; stroke-linecap: round; transform-box: view-box; transform-origin: 12px 12px; transition: transform .5s var(--ease) .1s, opacity .3s ease .1s; }
+:root[data-theme="dark"] .theme__core { transform: none; }
+:root[data-theme="dark"] .theme__cut { transform: none; transition-delay: .08s; }
+:root[data-theme="dark"] .theme__rays { transform: rotate(-90deg) scale(.4); opacity: 0; transition-delay: 0s; }
 
 /* The page re-exposes in the new theme: a short cross-fade with a brief overexposure,
-   while the dial itself keeps turning on top, outside the fade. */
+   while the switch itself keeps animating on top, outside the fade. */
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .6s; animation-timing-function: var(--ease); mix-blend-mode: normal; }
 ::view-transition-old(root) { animation-name: expose-out; }
 ::view-transition-new(root) { animation-name: expose-in; }
 @keyframes expose-out { to { opacity: 0; } }
 @keyframes expose-in { from { opacity: 0; filter: brightness(1.35) saturate(.85); } }
-::view-transition-group(theme-dial) { animation: none; }
-::view-transition-old(theme-dial) { display: none; }
-::view-transition-new(theme-dial) { animation: none; }
+::view-transition-group(theme-toggle) { animation: none; }
+::view-transition-old(theme-toggle) { display: none; }
+::view-transition-new(theme-toggle) { animation: none; }
 
 /* ---------- f-stop readout ---------- */
 .fstop {
@@ -372,12 +350,6 @@ a:hover > .arrow, .btn:hover .arrow { transform: translate(2px, -2px); }
 }
 .hero__lead em { color: var(--ink); font-weight: 600; }
 .hero__cta { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2.25rem; }
-.hero__meta {
-  display: flex; flex-wrap: wrap; gap: .25rem 1.25rem;
-  margin-top: 2.75rem;
-  font-size: .9375rem; color: var(--ink-3);
-}
-
 .hero__lens {
   position: relative;
   width: min(100%, 36rem);
@@ -402,11 +374,26 @@ a:hover > .arrow, .btn:hover .arrow { transform: translate(2px, -2px); }
   position: absolute; left: 50%; top: .45rem; width: 3px; height: .55rem; margin-left: -1.5px; border-radius: 3px; background: var(--ink-3);
 }
 
+/* ---------- Section dividers: an index and name over a hairline that draws in from the left ---------- */
+.divider {
+  position: relative;
+  width: min(var(--max), calc(100% - var(--gutter) * 2)); margin: clamp(4rem, 8vw, 6rem) auto 0;
+  display: flex; align-items: baseline; gap: .75rem; padding-bottom: .85rem;
+  font-size: .8125rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3);
+}
+.divider__num { color: var(--safelight-ink); font-variant-numeric: tabular-nums; }
+.divider::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: var(--line); transform-origin: left;
+}
+.js .divider::after { transform: scaleX(0); transition: transform 1.4s var(--ease) .15s; }
+.js .divider.is-in::after { transform: none; }
+
 /* ---------- Sections ---------- */
 .sec {
   max-width: calc(var(--max) + var(--gutter) * 2);
   margin-inline: auto;
-  padding: clamp(5rem, 11vw, 9rem) var(--gutter) 0;
+  padding: clamp(2rem, 4vw, 3rem) var(--gutter) 0;   /* most of the gap now sits above the divider */
 }
 .sec__head { display: grid; gap: 1.25rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); justify-items: start; }
 .sec__head .display { max-width: 18ch; }
@@ -561,7 +548,7 @@ a.pub__link:hover { background: var(--btn-bg); color: var(--btn-fg); box-shadow:
 .photo {
   /* Same left and right edges as every other section's content */
   width: min(var(--max), calc(100% - var(--gutter) * 2)); margin-inline: auto;
-  margin-top: clamp(5rem, 11vw, 9rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
   background: radial-gradient(70rem 40rem at 85% 0%, oklch(32% .12 30), transparent 70%), var(--ruby);
   color: var(--paper);
   border-radius: clamp(1.5rem, 4vw, 3.5rem);
@@ -775,12 +762,11 @@ html.has-consent .fstop { opacity: 0; pointer-events: none; }
   html { scroll-behavior: auto; }
   .js .reveal { transform: none; transition: opacity .4s ease; }
   .js .line__in { transform: none; transition: none; }
+  .js .divider::after { transform: none; transition: none; }
   .project:hover, .degree:hover, .frame:hover { transform: none; }
   .frame:hover::before, .frame:hover img { transform: none; }
   .btn:active { transform: none; }
-  .dial__rot { transition: none; }
-  .dial:hover .dial__rot, :root[data-theme="dark"] .dial:hover .dial__rot { rotate: none; }
-  .dial.is-click svg { animation: none; }
+  .theme__core, .theme__cut, .theme__rays { transition: none; }
   .consent { transition: opacity .2s ease; transform: none; }
   .menu, .nav.is-open .menu, .menu a, .nav.is-open .menu a, .burger span { transition: opacity .15s ease, visibility 0s; transform: none; }
   .nav.is-open .burger span:nth-child(1) { transform: rotate(45deg); }

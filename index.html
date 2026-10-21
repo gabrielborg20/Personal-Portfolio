@@ -47,64 +47,12 @@
     <a href="#photography">Photography</a>
   </nav>
   <div class="nav__actions">
-    <!-- Exposure mode dial: day / night. Two detents; the glyph under the red index is the active theme. -->
-    <button class="dial" id="theme-dial" type="button" role="switch" aria-checked="false" aria-label="Dark mode" title="Switch to dark mode">
-      <svg viewBox="-50 -50 100 100" aria-hidden="true" focusable="false">
-        <defs>
-          <radialGradient id="dial-metal" cx="38%" cy="30%" r="80%">
-            <stop class="dial__s1" offset="0"/><stop class="dial__s2" offset="1"/>
-          </radialGradient>
-        </defs>
-        <g class="dial__rot">
-          <circle class="dial__rim" r="47.5"/>
-          <g class="dial__knurl">
-            <line x1="0.00" y1="-38.00" x2="0.00" y2="-45.50"/>
-            <line x1="5.94" y1="-37.53" x2="7.12" y2="-44.94"/>
-            <line x1="11.74" y1="-36.14" x2="14.06" y2="-43.27"/>
-            <line x1="17.25" y1="-33.86" x2="20.66" y2="-40.54"/>
-            <line x1="22.34" y1="-30.74" x2="26.74" y2="-36.81"/>
-            <line x1="26.87" y1="-26.87" x2="32.17" y2="-32.17"/>
-            <line x1="30.74" y1="-22.34" x2="36.81" y2="-26.74"/>
-            <line x1="33.86" y1="-17.25" x2="40.54" y2="-20.66"/>
-            <line x1="36.14" y1="-11.74" x2="43.27" y2="-14.06"/>
-            <line x1="37.53" y1="-5.94" x2="44.94" y2="-7.12"/>
-            <line x1="38.00" y1="-0.00" x2="45.50" y2="-0.00"/>
-            <line x1="37.53" y1="5.94" x2="44.94" y2="7.12"/>
-            <line x1="36.14" y1="11.74" x2="43.27" y2="14.06"/>
-            <line x1="33.86" y1="17.25" x2="40.54" y2="20.66"/>
-            <line x1="30.74" y1="22.34" x2="36.81" y2="26.74"/>
-            <line x1="26.87" y1="26.87" x2="32.17" y2="32.17"/>
-            <line x1="22.34" y1="30.74" x2="26.74" y2="36.81"/>
-            <line x1="17.25" y1="33.86" x2="20.66" y2="40.54"/>
-            <line x1="11.74" y1="36.14" x2="14.06" y2="43.27"/>
-            <line x1="5.94" y1="37.53" x2="7.12" y2="44.94"/>
-            <line x1="0.00" y1="38.00" x2="0.00" y2="45.50"/>
-            <line x1="-5.94" y1="37.53" x2="-7.12" y2="44.94"/>
-            <line x1="-11.74" y1="36.14" x2="-14.06" y2="43.27"/>
-            <line x1="-17.25" y1="33.86" x2="-20.66" y2="40.54"/>
-            <line x1="-22.34" y1="30.74" x2="-26.74" y2="36.81"/>
-            <line x1="-26.87" y1="26.87" x2="-32.17" y2="32.17"/>
-            <line x1="-30.74" y1="22.34" x2="-36.81" y2="26.74"/>
-            <line x1="-33.86" y1="17.25" x2="-40.54" y2="20.66"/>
-            <line x1="-36.14" y1="11.74" x2="-43.27" y2="14.06"/>
-            <line x1="-37.53" y1="5.94" x2="-44.94" y2="7.12"/>
-            <line x1="-38.00" y1="0.00" x2="-45.50" y2="0.00"/>
-            <line x1="-37.53" y1="-5.94" x2="-44.94" y2="-7.12"/>
-            <line x1="-36.14" y1="-11.74" x2="-43.27" y2="-14.06"/>
-            <line x1="-33.86" y1="-17.25" x2="-40.54" y2="-20.66"/>
-            <line x1="-30.74" y1="-22.34" x2="-36.81" y2="-26.74"/>
-            <line x1="-26.87" y1="-26.87" x2="-32.17" y2="-32.17"/>
-            <line x1="-22.34" y1="-30.74" x2="-26.74" y2="-36.81"/>
-            <line x1="-17.25" y1="-33.86" x2="-20.66" y2="-40.54"/>
-            <line x1="-11.74" y1="-36.14" x2="-14.06" y2="-43.27"/>
-            <line x1="-5.94" y1="-37.53" x2="-7.12" y2="-44.94"/>
-          </g>
-          <circle class="dial__face" r="35" fill="url(#dial-metal)"/>
-          <g class="dial__sun" transform="rotate(-45) translate(0 -20)"><circle r="4.4"/><line x1="0.00" y1="-6.60" x2="0.00" y2="-9.40"/><line x1="4.67" y1="-4.67" x2="6.65" y2="-6.65"/><line x1="6.60" y1="-0.00" x2="9.40" y2="-0.00"/><line x1="4.67" y1="4.67" x2="6.65" y2="6.65"/><line x1="0.00" y1="6.60" x2="0.00" y2="9.40"/><line x1="-4.67" y1="4.67" x2="-6.65" y2="6.65"/><line x1="-6.60" y1="0.00" x2="-9.40" y2="0.00"/><line x1="-4.67" y1="-4.67" x2="-6.65" y2="-6.65"/></g>
-          <g class="dial__moon" transform="rotate(45) translate(0 -20)"><path d="M2.6 -7.6A8 8 0 1 0 8 3.9 6.3 6.3 0 0 1 2.6 -7.6Z"/></g>
-          <circle class="dial__hub" r="4.2"/>
-        </g>
-        <path class="dial__index" d="M-5.5 -51H5.5L0 -42.5Z"/>
+    <!-- Theme switch: a sun whose rays retract while a disc slides across to carve a crescent moon -->
+    <button class="theme" id="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Dark mode" title="Switch to dark mode">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <mask id="theme-cut"><rect width="24" height="24" fill="#fff"/><circle class="theme__cut" cx="17" cy="7" r="7" fill="#000"/></mask>
+        <circle class="theme__core" cx="12" cy="12" r="9" mask="url(#theme-cut)"/>
+        <g class="theme__rays"><line x1="19.6" y1="12" x2="22" y2="12"/><line x1="17.37" y1="17.37" x2="19.07" y2="19.07"/><line x1="12" y1="19.6" x2="12" y2="22"/><line x1="6.63" y1="17.37" x2="4.93" y2="19.07"/><line x1="4.4" y1="12" x2="2" y2="12"/><line x1="6.63" y1="6.63" x2="4.93" y2="4.93"/><line x1="12" y1="4.4" x2="12" y2="2"/><line x1="17.37" y1="6.63" x2="19.07" y2="4.93"/></g>
       </svg>
     </button>
     <a class="btn btn--small" href="#contact" data-focus-contact>Get in Touch</a>
@@ -155,10 +103,6 @@
         <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg>
       </a>
     </div>
-    <p class="hero__meta reveal">
-      <span>Department of Artificial Intelligence, University of Malta</span>
-      <span>Naxxar, Malta</span>
-    </p>
   </div>
 
   <div class="hero__lens" id="lens" aria-hidden="true">
@@ -202,6 +146,7 @@
 </section>
 
 <!-- RESEARCH -->
+<div class="divider reveal" aria-hidden="true"><span class="divider__num">01</span>Research</div>
 <section class="sec" id="research">
   <div class="sec__head">
     <div class="sec__copy">
@@ -366,6 +311,7 @@
 </section>
 
 <!-- PUBLICATIONS -->
+<div class="divider reveal" aria-hidden="true"><span class="divider__num">02</span>Publications</div>
 <section class="sec" id="publications">
   <div class="sec__head">
     <h2 class="display reveal">Published Work.</h2>
@@ -412,6 +358,7 @@
 </section>
 
 <!-- EXPERIENCE -->
+<div class="divider reveal" aria-hidden="true"><span class="divider__num">03</span>Experience</div>
 <section class="sec" id="experience">
   <div class="sec__head">
     <h2 class="display reveal">My Experience.</h2>
@@ -450,6 +397,7 @@
 </section>
 
 <!-- EDUCATION -->
+<div class="divider reveal" aria-hidden="true"><span class="divider__num">04</span>Education</div>
 <section class="sec" id="education">
   <div class="sec__head">
     <h2 class="display reveal">Two Degrees, One Subject.</h2>
@@ -489,6 +437,7 @@
 </section>
 
 <!-- SCOUTS -->
+<div class="divider reveal" aria-hidden="true"><span class="divider__num">05</span>Scouts</div>
 <section class="sec scouts" id="scouts">
   <div class="scouts__card reveal">
     <div class="scouts__copy">
@@ -527,6 +476,7 @@
 </section>
 
 <!-- PHOTOGRAPHY -->
+<div class="divider reveal" aria-hidden="true"><span class="divider__num">06</span>Photography</div>
 <section class="photo" id="photography">
   <div class="photo__inner">
     <div class="photo__aside">
@@ -553,6 +503,7 @@
 </section>
 
 <!-- CONTACT -->
+<div class="divider reveal" aria-hidden="true"><span class="divider__num">07</span>Contact</div>
 <section class="sec contact" id="contact">
   <h2 class="display display--xl reveal">Let&rsquo;s Talk.</h2>
   <p class="sec__sub reveal">Open to research collaborations and roles in applied AI, immersive learning and data.</p>
