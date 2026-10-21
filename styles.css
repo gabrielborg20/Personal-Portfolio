@@ -559,10 +559,12 @@ a.pub__link:hover { background: var(--btn-bg); color: var(--btn-fg); box-shadow:
 
 /* ---------- Photography: drenched safelight ---------- */
 .photo {
+  /* Same left and right edges as every other section's content */
+  width: min(var(--max), calc(100% - var(--gutter) * 2)); margin-inline: auto;
   margin-top: clamp(5rem, 11vw, 9rem);
   background: radial-gradient(70rem 40rem at 85% 0%, oklch(32% .12 30), transparent 70%), var(--ruby);
   color: var(--paper);
-  border-radius: clamp(1.5rem, 4vw, 3.5rem) clamp(1.5rem, 4vw, 3.5rem) 0 0;
+  border-radius: clamp(1.5rem, 4vw, 3.5rem);
 }
 .photo__inner {
   max-width: calc(var(--max) + var(--gutter) * 2); margin-inline: auto; padding: clamp(4rem, 9vw, 7rem) var(--gutter);
@@ -727,7 +729,7 @@ html.has-consent .fstop { opacity: 0; pointer-events: none; }
 :root[data-theme="dark"] .fstop { box-shadow: inset 0 0 0 1px oklch(100% 0 0 / .1), 0 10px 30px -10px oklch(0% 0 0 / .6); }
 :root[data-theme="dark"] .hero__lens { filter: drop-shadow(0 40px 60px oklch(0% 0 0 / .55)) drop-shadow(0 0 70px oklch(62% .16 45 / .16)); }
 :root[data-theme="dark"] .pipe__src-card { stroke: oklch(100% 0 0 / .14); stroke-width: 1; }
-:root[data-theme="dark"] .photo { box-shadow: 0 -1px 0 oklch(100% 0 0 / .06); }
+:root[data-theme="dark"] .photo { box-shadow: inset 0 0 0 1px oklch(100% 0 0 / .06); }
 
 /* ---------- Reveal motion ---------- */
 .js .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--ease), transform 1.1s var(--ease); transition-delay: var(--d, 0s); }
