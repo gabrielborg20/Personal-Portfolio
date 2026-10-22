@@ -36,11 +36,14 @@
       if (d > 1.04) continue;
       cells.push({ el: el('circle', { cx: cx.toFixed(2), cy: cy.toFixed(2), r: 0 }, halftone), d, r: -1 });
     }
-    // swap the placeholder for the photo once (and only if) it loads
-    const img = $('#portrait-img'), src = img && img.getAttribute('data-src');
+    // the mask goes on only now, so a missing or stale script never leaves the photo hidden
+    const layer = $('#portrait-layer');
+    if (layer) layer.setAttribute('mask', 'url(#portrait-mask)');
+    // the photo covers the placeholder once it loads; drop the placeholder then
+    const img = $('#portrait-img'), src = img && img.getAttribute('href');
     if (src) {
       const probe = new Image();
-      probe.onload = () => { img.setAttribute('href', src); portrait.classList.add('has-photo'); };
+      probe.onload = () => portrait.classList.add('has-photo');
       probe.src = src;
     }
   }

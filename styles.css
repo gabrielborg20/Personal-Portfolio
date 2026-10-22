@@ -387,6 +387,9 @@ a:hover > .arrow, .btn:hover .arrow { transform: translate(2px, -2px); }
 /* Same as the photo tiles: the portrait cannot be dragged out, selected or long-press saved */
 .hero__portrait, .hero__portrait * { -webkit-user-drag: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 .portrait__svg { pointer-events: none; }   /* nothing to click; the tilt listens on the window */
+/* Until script.js attaches the dot mask, hide the photo so it does not flash; if the script never does, show it anyway */
+.js #portrait-layer:not([mask]) { opacity: 0; animation: portrait-fallback 0s linear 2.5s forwards; }
+@keyframes portrait-fallback { to { opacity: 1; } }
 .svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
 .hero__scroll {
   position: absolute; left: 50%; bottom: 1.5rem; translate: -50% 0;

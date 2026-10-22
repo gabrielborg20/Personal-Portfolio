@@ -13,7 +13,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Funnel+Sans:wght@300..800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<!-- ?v= forces browsers to fetch the CSS/JS that match this page after a deploy; bump it whenever either file changes -->
+<link rel="stylesheet" href="styles.css?v=2026-10-22">
 <script>
   /* Theme before first paint: the visitor's saved choice, otherwise the system's. */
   (function () {
@@ -132,12 +133,13 @@
         <mask id="portrait-mask" maskUnits="userSpaceOnUse" x="-110" y="-110" width="220" height="220"><g id="portrait-dots" fill="#fff"></g></mask>
       </defs>
       <circle class="portrait__ring" r="104"/>
-      <g clip-path="url(#portrait-clip)" mask="url(#portrait-mask)">
+      <!-- script.js attaches the dot mask once the dots exist, so without it the photo still shows plainly -->
+      <g id="portrait-layer" clip-path="url(#portrait-clip)">
         <g class="portrait__ph">
           <circle r="100" fill="url(#portrait-ph)"/>
           <text class="portrait__initials" y="4" text-anchor="middle" dominant-baseline="central">GB</text>
         </g>
-        <image class="portrait__img" id="portrait-img" draggable="false" data-src="assets/portrait.jpg" x="-100" y="-100" width="200" height="200" preserveAspectRatio="xMidYMin slice"/>
+        <image class="portrait__img" id="portrait-img" draggable="false" href="assets/portrait.jpg" x="-100" y="-100" width="200" height="200" preserveAspectRatio="xMidYMin slice"/>
       </g>
     </svg>
   </div>
@@ -545,6 +547,6 @@
   </div>
 </section>
 
-<script src="script.js"></script>
+<script src="script.js?v=2026-10-22"></script>
 </body>
 </html>
