@@ -64,7 +64,7 @@
     return el('circle', { cx: (Math.sin(a) * 13).toFixed(2), cy: (-Math.cos(a) * 13).toFixed(2), r: 1.9 }, ring);
   }) : [];
   const nav = $('#nav');
-  const state = { open: 0, openTarget: 0, tx: 0, ty: 0, tilt: [0, 0], tiltTarget: [0, 0] };
+  const state = { open: 0, openTarget: 0, ty: 0, tiltTarget: [0, 0] };
   let loaded = 0;          // 0..1 entrance of the portrait
   let lastLit = -1;
   let lastY = 0;
@@ -91,12 +91,9 @@
   let raf = 0, running = false;
   function frame() {
     state.open += (state.openTarget - state.open) * 0.09;
-    state.tilt[0] += (state.tiltTarget[0] - state.tilt[0]) * 0.08;
-    state.tilt[1] += (state.tiltTarget[1] - state.tilt[1]) * 0.08;
     drawPortrait(state.open);
-    if (portrait) portrait.style.transform = `translate3d(${state.tilt[0] * 14}px, ${state.ty + state.tilt[1] * 14}px, 0) rotate(${state.tilt[0] * 3}deg)`;
-    const settled = Math.abs(state.openTarget - state.open) < .0006
-      && Math.abs(state.tiltTarget[0] - state.tilt[0]) < .001 && Math.abs(state.tiltTarget[1] - state.tilt[1]) < .001;
+    if (portrait) portrait.style.transform = `translate3d(0, ${state.ty}px, 0)`;   // stays put under the mouse; only drifts up as the hero scrolls away
+    const settled = Math.abs(state.openTarget - state.open) < .0006;
     if (settled && loaded >= 1) { running = false; return; }
     raf = requestAnimationFrame(frame);
   }
@@ -199,14 +196,13 @@
     map.forEach((_, id) => { const s = document.getElementById(id); s && io.observe(s); });
   }
 
-  /* ---------- Pointer parallax on the portrait ---------- */
+  /* ---------- Pointer position (drives the VR headset's parallax; the portrait stays still) ---------- */
   function setupTilt() {
     if (reduce) return;
     addEventListener('pointermove', e => {
       if (!isMouse(e)) return;
       state.tiltTarget[0] = (e.clientX / innerWidth - 0.5) * 2;
       state.tiltTarget[1] = (e.clientY / innerHeight - 0.5) * 2;
-      if (scrollY < innerHeight) wake();
     }, { passive: true });
   }
 
