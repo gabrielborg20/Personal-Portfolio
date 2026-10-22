@@ -22,98 +22,48 @@
     return n;
   };
 
-  /* ---------- Aperture geometry ----------
-     An n-gon opening of radius r, rotated by `rot`. Blade edges are the polygon's
-     sides extended to the outer disc, which reads as overlapping iris blades. */
-  const BLADES = 7;
-  function irisGeometry(open, R, { rMin = 0.14, rMax = 0.92, twist = 0.7 } = {}) {
-    const r = R * lerp(rMin, rMax, open);
-    const rot = -open * twist - Math.PI / 2;
-    const v = Array.from({ length: BLADES }, (_, k) => {
-      const a = rot + (k * 2 * Math.PI) / BLADES;
-      return [r * Math.cos(a), r * Math.sin(a)];
-    });
-    const poly = 'M' + v.map(p => p[0].toFixed(2) + ' ' + p[1].toFixed(2)).join('L') + 'Z';
-    const rays = v.map((p, k) => {
-      const q = v[(k + 1) % BLADES];
-      let dx = p[0] - q[0], dy = p[1] - q[1];
-      const len = Math.hypot(dx, dy) || 1;
-      dx /= len; dy /= len;
-      // solve |p + t d| = R for t > 0
-      const b = p[0] * dx + p[1] * dy;
-      const c = p[0] * p[0] + p[1] * p[1] - R * R;
-      const t = -b + Math.sqrt(Math.max(0, b * b - c));
-      return [p[0], p[1], p[0] + dx * t, p[1] + dy * t];
-    });
-    return { poly, rays };
-  }
-
-  /* ---------- Hero lens ---------- */
-  const lens = $('#lens');
-  const irisFill = $('#iris-fill');
-  const irisEdge = $('#iris-edge');
-  const bladeG = $('#iris-blades');
-  const R_LENS = 92;
-  let bladeLines = [];
-  if (irisFill) {
-    bladeLines = Array.from({ length: BLADES }, () => el('line', {}, bladeG));
-    const ticks = $('#ticks');
-    for (let i = 0; i < 48; i++) {
-      const a = (i / 48) * Math.PI * 2;
-      const major = i % 6 === 0;
-      const r1 = major ? 93.6 : 95.2, r2 = 98;
-      el('line', {
-        x1: (r1 * Math.cos(a)).toFixed(2), y1: (r1 * Math.sin(a)).toFixed(2),
-        x2: (r2 * Math.cos(a)).toFixed(2), y2: (r2 * Math.sin(a)).toFixed(2),
-        stroke: major ? 'oklch(100% 0 0 / .55)' : 'oklch(100% 0 0 / .22)',
-        'stroke-width': major ? '.8' : '.5', 'stroke-linecap': 'round'
-      }, ticks);
+  /* ---------- Hero portrait: halftone reveal ----------
+     A grid of dots masks the photo. Each dot grows with `open` (0..1), the centre first,
+     until neighbours merge into the full image; scrolling the hero away shrinks them back. */
+  const portrait = $('#portrait');
+  const halftone = $('#portrait-dots');
+  const R_PORTRAIT = 100, SP = 9;            // disc radius and dot spacing, in SVG units
+  const cells = [];
+  if (halftone) {
+    const n = Math.ceil(R_PORTRAIT / SP);
+    for (let y = -n; y <= n; y++) for (let x = -n; x <= n; x++) {
+      const cx = (x + .5) * SP, cy = (y + .5) * SP, d = Math.hypot(cx, cy) / R_PORTRAIT;
+      if (d > 1.04) continue;
+      cells.push({ el: el('circle', { cx: cx.toFixed(2), cy: cy.toFixed(2), r: 0 }, halftone), d, r: -1 });
+    }
+    // swap the placeholder for the photo once (and only if) it loads
+    const img = $('#portrait-img'), src = img && img.getAttribute('data-src');
+    if (src) {
+      const probe = new Image();
+      probe.onload = () => { img.setAttribute('href', src); portrait.classList.add('has-photo'); };
+      probe.src = src;
     }
   }
-  function drawLens(open) {
-    if (!irisFill) return;
-    const { poly, rays } = irisGeometry(open, R_LENS);
-    irisFill.setAttribute('d', `M-${R_LENS} 0a${R_LENS} ${R_LENS} 0 1 0 ${R_LENS * 2} 0a${R_LENS} ${R_LENS} 0 1 0 -${R_LENS * 2} 0Z${poly}`);
-    irisEdge.setAttribute('d', poly);
-    rays.forEach((r, i) => {
-      const l = bladeLines[i];
-      l.setAttribute('x1', r[0].toFixed(2)); l.setAttribute('y1', r[1].toFixed(2));
-      l.setAttribute('x2', r[2].toFixed(2)); l.setAttribute('y2', r[3].toFixed(2));
-    });
+  function drawPortrait(open) {
+    const full = SP * .75;                     // past SP / sqrt(2), neighbouring dots overlap
+    for (const c of cells) {
+      const r = Math.round(clamp((open - c.d * .5) / .5, 0, 1) * full * 100) / 100;
+      if (r !== c.r) { c.el.setAttribute('r', r); c.r = r; }
+    }
   }
 
-  /* ---------- Mini irises (nav mark and f-stop readout) ---------- */
-  function buildMini(group) {
-    el('circle', { r: 46, fill: 'currentColor', opacity: '.0' }, group);
-    const ring = el('circle', { r: 46, fill: 'none', stroke: 'oklch(100% 0 0 / .35)', 'stroke-width': 4 }, group);
-    const body = el('path', { 'fill-rule': 'evenodd' }, group);
-    const edge = el('path', { fill: 'none', stroke: 'oklch(100% 0 0 / .8)', 'stroke-width': 2.5, 'stroke-linejoin': 'round' }, group);
-    return { ring, body, edge };
-  }
-  const mini = [
-    { g: $('#mark-iris'), fill: 'var(--ink)', ring: 'var(--ink)', edge: 'var(--ground)' },   // follows the theme
-    { g: $('#fstop-iris'), fill: 'oklch(100% 0 0 / .92)', ring: 'oklch(100% 0 0 / .4)', edge: 'oklch(19% 0.028 258)' }
-  ].filter(m => m.g).map(m => {
-    const parts = buildMini(m.g);
-    parts.body.style.fill = m.fill;
-    parts.ring.style.stroke = m.ring;
-    parts.edge.style.stroke = m.edge;
-    return parts;
-  });
-  function drawMini(open) {
-    const { poly } = irisGeometry(open, 46, { rMin: .12, rMax: .9, twist: .9 });
-    const d = `M-46 0a46 46 0 1 0 92 0a46 46 0 1 0 -92 0Z${poly}`;
-    mini.forEach(m => { m.body.setAttribute('d', d); m.edge.setAttribute('d', poly); });
-  }
-
-  /* ---------- Scroll-driven f-stop ---------- */
-  const STOPS = [1.4, 2, 2.8, 4, 5.6, 8, 11, 16];
-  const fVal = $('#fstop-val');
-  const fstop = $('#fstop');
+  /* ---------- Scroll progress: ring of dots ---------- */
+  const toTop = $('#to-top');
+  const DOTS = 16;
+  const ring = $('#to-top-dots');
+  const dots = ring ? Array.from({ length: DOTS }, (_, i) => {
+    const a = i / DOTS * Math.PI * 2;   // clockwise from 12 o'clock
+    return el('circle', { cx: (Math.sin(a) * 13).toFixed(2), cy: (-Math.cos(a) * 13).toFixed(2), r: 1.9 }, ring);
+  }) : [];
   const nav = $('#nav');
-  const state = { open: 0, openTarget: 0, miniOpen: 1, miniTarget: 1, tx: 0, ty: 0, tilt: [0, 0], tiltTarget: [0, 0] };
-  let loaded = 0;          // 0..1 entrance of the lens
-  let lastShown = '';
+  const state = { open: 0, openTarget: 0, tx: 0, ty: 0, tilt: [0, 0], tiltTarget: [0, 0] };
+  let loaded = 0;          // 0..1 entrance of the portrait
+  let lastLit = -1;
   let lastY = 0;
 
   function readScroll() {
@@ -121,34 +71,28 @@
     const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
     const p = clamp(y / max, 0, 1);
     const heroP = clamp(y / (innerHeight * 0.9), 0, 1);
-    // the big lens closes while the hero scrolls away
-    state.openTarget = lerp(0.8, 0.12, heroP * heroP) * loaded;
-    // the page-level readout travels through every stop
-    state.miniTarget = 1 - p;
-    const fIdx = p * (STOPS.length - 1);
-    const lo = Math.floor(fIdx), hi = Math.min(STOPS.length - 1, lo + 1);
-    const f = lerp(STOPS[lo], STOPS[hi], fIdx - lo);
-    const shown = (f < 10 ? f.toFixed(1) : Math.round(f).toString());
-    if (shown !== lastShown && fVal) { fVal.textContent = shown; lastShown = shown; }
-    if (fstop) { const dim = y < innerHeight * 0.35; fstop.classList.toggle('is-dim', dim); fstop.inert = dim; }   // stays up at the bottom, where 'back to top' is wanted
+    // the portrait dissolves back into dots while the hero scrolls away
+    state.openTarget = lerp(1, 0.2, heroP * heroP) * loaded;
+    // one more dot lights per 1/16 of the page, clockwise; the leading dot takes the accent
+    const lit = Math.round(p * DOTS);
+    if (lit !== lastLit) { dots.forEach((d, i) => { d.setAttribute('class', i < lit - 1 ? 'on' : i === lit - 1 ? 'now' : ''); }); lastLit = lit; }
+    if (toTop) { const dim = y < innerHeight * 0.35; toTop.classList.toggle('is-dim', dim); toTop.inert = dim; }   // stays up at the bottom, where 'back to top' is wanted
     // nav hides on scroll-down, returns on scroll-up
     if (nav && !nav.classList.contains('is-open')) nav.classList.toggle('is-hidden', y > lastY + 4 && y > 240 ? true : (y < lastY - 4 ? false : nav.classList.contains('is-hidden')));
     lastY = y;
-    // lens drifts up slightly as the hero leaves
-    if (lens) state.ty = -heroP * 60;
+    // portrait drifts up slightly as the hero leaves
+    if (portrait) state.ty = -heroP * 60;
   }
 
   /* ---------- Frame loop (critically damped follow) ---------- */
   let raf = 0, running = false;
   function frame() {
     state.open += (state.openTarget - state.open) * 0.09;
-    state.miniOpen += (state.miniTarget - state.miniOpen) * 0.12;
     state.tilt[0] += (state.tiltTarget[0] - state.tilt[0]) * 0.08;
     state.tilt[1] += (state.tiltTarget[1] - state.tilt[1]) * 0.08;
-    drawLens(state.open);
-    drawMini(state.miniOpen);
-    if (lens) lens.style.transform = `translate3d(${state.tilt[0] * 14}px, ${state.ty + state.tilt[1] * 14}px, 0) rotate(${state.tilt[0] * 3}deg)`;
-    const settled = Math.abs(state.openTarget - state.open) < .0006 && Math.abs(state.miniTarget - state.miniOpen) < .0006
+    drawPortrait(state.open);
+    if (portrait) portrait.style.transform = `translate3d(${state.tilt[0] * 14}px, ${state.ty + state.tilt[1] * 14}px, 0) rotate(${state.tilt[0] * 3}deg)`;
+    const settled = Math.abs(state.openTarget - state.open) < .0006
       && Math.abs(state.tiltTarget[0] - state.tilt[0]) < .001 && Math.abs(state.tiltTarget[1] - state.tilt[1]) < .001;
     if (settled && loaded >= 1) { running = false; return; }
     raf = requestAnimationFrame(frame);
@@ -161,8 +105,8 @@
     $$('.line__in').forEach((n, i) => { n.style.setProperty('--d', (0.12 + i * 0.12) + 's'); });
     $('.hero__name') && $('.hero__name').classList.add('is-ready');
     $$('.hero .reveal').forEach((n, i) => { n.style.setProperty('--d', (0.45 + i * 0.12) + 's'); n.classList.add('is-in'); });
-    if (reduce) { loaded = 1; readScroll(); state.open = state.openTarget; state.miniOpen = state.miniTarget; drawLens(state.open); drawMini(state.miniOpen); return; }
-    // lens opens like a shutter on load
+    if (reduce) { loaded = 1; readScroll(); state.open = state.openTarget; drawPortrait(state.open); return; }
+    // the dots open the portrait on load
     const t0 = performance.now(), dur = 1700;
     (function step(now) {
       const t = clamp((now - t0) / dur, 0, 1);
@@ -252,7 +196,7 @@
     map.forEach((_, id) => { const s = document.getElementById(id); s && io.observe(s); });
   }
 
-  /* ---------- Pointer parallax on the lens ---------- */
+  /* ---------- Pointer parallax on the portrait ---------- */
   function setupTilt() {
     if (reduce) return;
     addEventListener('pointermove', e => {
@@ -730,11 +674,11 @@
     });
   }
 
-  /* ---------- Back to top: the f-stop readout ----------
-     Glides home (the aperture re-opens on the way up); keyboard users land on the name link. */
+  /* ---------- Back to top: the dot ring ----------
+     Glides home (the dots go dark on the way up); keyboard users land on the name link. */
   function setupBackToTop() {
-    if (!fstop) return;
-    fstop.addEventListener('click', e => {
+    if (!toTop) return;
+    toTop.addEventListener('click', e => {
       scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
       if (location.hash) history.replaceState(null, '', location.pathname + location.search);
       if (e.detail === 0) { const brand = $('.nav__brand'); brand && brand.focus({ preventScroll: true }); }
@@ -744,9 +688,9 @@
   /* ---------- Init ---------- */
   setupTheme(); setupMenu(); setupBackToTop(); setupConsent(); setupCopyMail();
   const yr = $('#year'); if (yr) yr.textContent = new Date().getFullYear();
-  drawLens(0); drawMini(1);
+  drawPortrait(0);
   setupReveal(); setupTimeline(); setupSpotlight(); setupMagnetic(); setupNavState(); setupTilt(); setupPipe(); setupVR(); setupCompass(); setupFocusContact();
-  addEventListener('scroll', () => { readScroll(); if (!reduce) wake(); else { state.open = state.openTarget; state.miniOpen = state.miniTarget; drawLens(state.open); drawMini(state.miniOpen); } }, { passive: true });
+  addEventListener('scroll', () => { readScroll(); if (!reduce) wake(); else { state.open = state.openTarget; drawPortrait(state.open); } }, { passive: true });
   addEventListener('resize', readScroll);
   document.fonts && document.fonts.ready ? document.fonts.ready.then(enter) : enter();
 })();

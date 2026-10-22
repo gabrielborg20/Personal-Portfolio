@@ -35,7 +35,7 @@
 <!-- Floating nav -->
 <header class="nav" id="nav">
   <a class="nav__brand" href="#top" aria-label="Gabriel Borg, back to top" translate="no">
-    <svg class="nav__mark" viewBox="-50 -50 100 100" aria-hidden="true"><g id="mark-iris"></g></svg>
+    <svg class="nav__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect class="nav__tile" width="24" height="24" rx="6.5"/><path class="nav__chev" d="M7.25 8.25 11 12l-3.75 3.75"/><path class="nav__caret" d="M12.75 16h4.25"/></svg>
     <span>Gabriel Borg</span>
   </a>
   <nav class="nav__links" aria-label="Primary">
@@ -78,11 +78,26 @@
 </header>
 <div class="scrim" id="scrim" aria-hidden="true"></div>
 
-<!-- Scroll-driven f-stop readout -->
-<button class="fstop" id="fstop" type="button" aria-label="Back to top" title="Back to top">
-  <svg viewBox="-50 -50 100 100" aria-hidden="true" focusable="false"><g id="fstop-iris"></g></svg>
-  <span class="fstop__num" aria-hidden="true">f/<b id="fstop-val">1.4</b></span>
+<!-- Scroll progress: a ring of 16 dots that lights clockwise from 12 o'clock as you read; doubles as back to top -->
+<button class="to-top" id="to-top" type="button" aria-label="Back to top" title="Back to top">
+  <svg class="to-top__dots" viewBox="-24 -24 48 48" aria-hidden="true" focusable="false"><g id="to-top-dots"></g></svg>
+  <svg class="to-top__up" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 15l6-6 6 6"/></svg>
 </button>
+
+<!-- Shared SVG paints (compass, VR headset) -->
+<svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="barrel" cx="40%" cy="30%" r="85%">
+      <stop offset="0" stop-color="oklch(36% 0.03 258)"/>
+      <stop offset="1" stop-color="oklch(15% 0.025 258)"/>
+    </radialGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="oklch(70% 0.02 250)"/>
+      <stop offset=".5" stop-color="oklch(30% 0.02 255)"/>
+      <stop offset="1" stop-color="oklch(60% 0.02 250)"/>
+    </linearGradient>
+  </defs>
+</svg>
 
 <main id="main">
 
@@ -105,39 +120,26 @@
     </div>
   </div>
 
-  <div class="hero__lens" id="lens" aria-hidden="true">
-    <svg viewBox="-110 -110 220 220" class="lens__svg">
+  <!-- Portrait: a halftone dot grid masks the photo; the dots grow from the centre and merge as it opens.
+       Drop a square-ish photo at assets/portrait.jpg; until then a placeholder with initials shows. -->
+  <div class="hero__portrait" id="portrait" aria-hidden="true">
+    <svg viewBox="-110 -110 220 220" class="portrait__svg">
       <defs>
-        <radialGradient id="light" cx="50%" cy="46%" r="60%">
-          <stop offset="0" stop-color="oklch(98% 0.03 90)"/>
-          <stop offset=".45" stop-color="oklch(90% 0.08 70)"/>
-          <stop offset="1" stop-color="oklch(66% 0.19 38)"/>
+        <radialGradient id="portrait-ph" cx="38%" cy="30%" r="85%">
+          <stop class="portrait__ph1" offset="0"/><stop class="portrait__ph2" offset="1"/>
         </radialGradient>
-        <radialGradient id="barrel" cx="40%" cy="30%" r="85%">
-          <stop offset="0" stop-color="oklch(36% 0.03 258)"/>
-          <stop offset="1" stop-color="oklch(15% 0.025 258)"/>
-        </radialGradient>
-        <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="oklch(70% 0.02 250)"/>
-          <stop offset=".5" stop-color="oklch(30% 0.02 255)"/>
-          <stop offset="1" stop-color="oklch(60% 0.02 250)"/>
-        </linearGradient>
-        <clipPath id="disc"><circle r="92"/></clipPath>
+        <clipPath id="portrait-clip"><circle r="100"/></clipPath>
+        <mask id="portrait-mask" maskUnits="userSpaceOnUse" x="-110" y="-110" width="220" height="220"><g id="portrait-dots" fill="#fff"></g></mask>
       </defs>
-      <circle r="106" fill="url(#rim)"/>
-      <circle r="101" fill="oklch(20% 0.025 258)"/>
-      <circle r="98.5" fill="none" stroke="oklch(100% 0 0 / .14)" stroke-width=".6"/>
-      <!-- tick ring: f-stops -->
-      <g id="ticks"></g>
-      <circle r="92" fill="url(#light)"/>
-      <g clip-path="url(#disc)">
-        <path id="iris-fill" fill="url(#barrel)" fill-rule="evenodd"/>
-        <g id="iris-blades" stroke="oklch(100% 0 0 / .16)" stroke-width=".5" fill="none"></g>
-        <path id="iris-edge" fill="none" stroke="oklch(100% 0 0 / .5)" stroke-width=".7" stroke-linejoin="round"/>
+      <circle class="portrait__ring" r="104"/>
+      <g clip-path="url(#portrait-clip)" mask="url(#portrait-mask)">
+        <g class="portrait__ph">
+          <circle r="100" fill="url(#portrait-ph)"/>
+          <text class="portrait__initials" y="4" text-anchor="middle" dominant-baseline="central">GB</text>
+        </g>
+        <image class="portrait__img" id="portrait-img" draggable="false" data-src="assets/portrait.jpg" x="-100" y="-100" width="200" height="200" preserveAspectRatio="xMidYMin slice"/>
       </g>
-      <circle r="92" fill="none" stroke="oklch(0% 0 0 / .5)" stroke-width="1.2"/>
     </svg>
-    <div class="lens__glare"></div>
   </div>
 
   <a class="hero__scroll" href="#research" aria-label="Scroll to research">

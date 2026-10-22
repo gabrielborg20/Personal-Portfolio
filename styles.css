@@ -1,6 +1,6 @@
 /* ==========================================================================
    Gabriel Borg — portfolio
-   World: a lens. Light-box ground, blue ink, one safelight accent.
+   World: a halftone dot grid. Light-box ground, blue ink, one safelight accent.
    Night: the same ink becomes the ground; the safelight lifts to stay legible.
    ========================================================================== */
 
@@ -41,6 +41,8 @@
   --glass: oklch(100% 0 0 / .66); --glass-edge: oklch(100% 0 0 / .7);
   --tint: color-mix(in oklch, var(--shade) min(100%, calc(6% * var(--shade-k))), transparent); --tint-2: color-mix(in oklch, var(--shade) min(100%, calc(7% * var(--shade-k))), transparent);
   --ghost-bg: oklch(100% 0 0 / .5);
+  --control-edge: var(--line);        /* outline of ghost buttons and pill links */
+  --control-hi: 0 0 transparent;      /* top highlight on controls (night only) */
   --card-edge: color-mix(in oklch, var(--shade) min(100%, calc(6% * var(--shade-k))), transparent);
   --glow-a: oklch(93% .05 60 / .55); --glow-b: oklch(94% .03 240 / .8);
   --slide: var(--card);
@@ -70,7 +72,10 @@
   --btn-bg: oklch(95% 0.008 250); --btn-fg: oklch(17% 0.028 258);
   --glass: oklch(21% 0.026 258 / .72); --glass-edge: oklch(100% 0 0 / .09);
   --tint: oklch(100% 0 0 / .07); --tint-2: oklch(100% 0 0 / .1);
-  --ghost-bg: oklch(100% 0 0 / .03);
+  /* controls sit a step above the ground, with a firmer edge and a faint top highlight, so they do not sink into it */
+  --ghost-bg: oklch(22% 0.027 258);
+  --control-edge: oklch(42% 0.026 256);
+  --control-hi: inset 0 1px 0 oklch(100% 0 0 / .06);
   --card-edge: oklch(100% 0 0 / .06);
   --glow-a: oklch(40% .1 45 / .3); --glow-b: oklch(30% .06 250 / .45);
   --slide: oklch(95% 0.006 250);
@@ -159,8 +164,8 @@ h1, h2, h3, .mail, .nav__brand, .frame__label { font-feature-settings: 'calt' 0,
 }
 .btn--primary:hover { background: var(--accent-solid); color: #fff; }
 .btn--primary:hover::after { opacity: 1; }
-.btn--ghost { color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); background: var(--ghost-bg); }
-.btn--ghost:hover { box-shadow: inset 0 0 0 1px var(--ink); }
+.btn--ghost { color: var(--ink); box-shadow: inset 0 0 0 1px var(--control-edge), var(--control-hi); background: var(--ghost-bg); }
+.btn--ghost:hover { box-shadow: inset 0 0 0 1px var(--ink), var(--control-hi); }
 .btn--light { background: var(--paper); color: var(--ruby); }
 .btn--light:hover { background: #fff; }
 .arrow { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: transform .35s var(--ease); }
@@ -183,7 +188,12 @@ a:hover > .arrow, .btn:hover .arrow { transform: translate(2px, -2px); }
 }
 .nav.is-hidden { transform: translateY(-160%); }
 .nav__brand { display: flex; align-items: center; gap: .65rem; font: 600 1rem/1 var(--display); letter-spacing: -0.02em; }
-.nav__mark { width: 1.6rem; height: 1.6rem; }
+.nav__mark { width: 1.6rem; height: 1.6rem; flex: none; }
+/* Logo: a terminal prompt; the cursor blinks a few times on hover */
+.nav__tile { fill: var(--ink); }
+.nav__chev, .nav__caret { fill: none; stroke: var(--ground); stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+.nav__brand:hover .nav__caret, .nav__brand:focus-visible .nav__caret { animation: caret-blink 1.05s steps(1, end) 3; }
+@keyframes caret-blink { 50% { opacity: 0; } }
 .nav__links { display: flex; gap: .15rem; }
 .nav__links a {
   padding: .5rem .85rem; border-radius: 999px;
@@ -288,31 +298,39 @@ a:hover > .arrow, .btn:hover .arrow { transform: translate(2px, -2px); }
 ::view-transition-old(theme-toggle) { display: none; }
 ::view-transition-new(theme-toggle) { animation: none; }
 
-/* ---------- f-stop readout ---------- */
-.fstop {
+/* ---------- Scroll progress: dot ring, doubles as back to top ----------
+   Sixteen dots light clockwise from 12 o'clock as the page is read; on hover or focus they give way to an up arrow. */
+.to-top {
   position: fixed; z-index: 40;
   right: max(clamp(.75rem, 2vw, 1.5rem), env(safe-area-inset-right)); bottom: max(clamp(.75rem, 2vw, 1.5rem), env(safe-area-inset-bottom));
-  display: flex; align-items: center; gap: .55rem;
-  padding: .4rem .85rem .4rem .45rem;
-  border-radius: 999px;
+  display: grid; place-items: center;
+  width: 3.25rem; height: 3.25rem; padding: 0;
+  border-radius: 50%;
   background: var(--readout);
   -webkit-backdrop-filter: blur(16px) saturate(160%);
   backdrop-filter: blur(16px) saturate(160%);
   color: #fff;
   box-shadow: 0 10px 30px -10px oklch(10% .03 258 / .5);
-  font: 500 .8125rem/1 var(--body);
-  font-variant-numeric: tabular-nums;
   border: 0; cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transition: opacity .5s ease, translate .6s var(--ease), transform .3s var(--ease), background-color .25s ease;
 }
-/* Back to top: lifts slightly on hover, presses on click */
-.fstop:hover { transform: translateY(-2px); background: color-mix(in oklch, var(--readout), oklch(40% .03 258) 30%); }
-.fstop:active { transform: scale(.95); transition-duration: .1s; }
-.fstop:focus-visible { outline: 2px solid var(--safelight); outline-offset: 3px; }
-.fstop svg { width: 1.9rem; height: 1.9rem; }
-.fstop__num { letter-spacing: .02em; min-width: 3.6ch; }
-.fstop.is-dim { opacity: 0; translate: 0 1rem; pointer-events: none; }
+.to-top > * { grid-area: 1 / 1; }
+.to-top__dots { width: 100%; height: 100%; transition: opacity .2s ease, transform .3s var(--ease); }
+.to-top__dots circle { fill: oklch(100% 0 0 / .2); transition: fill .25s ease; }
+.to-top__dots circle.on { fill: oklch(100% 0 0 / .9); }
+.to-top__dots circle.now { fill: var(--safelight); }
+.to-top__up {
+  width: 1.15rem; height: 1.15rem; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+  opacity: 0; transform: translateY(5px); transition: opacity .2s ease, transform .35s var(--ease);
+}
+/* Back to top: lifts slightly and swaps to the arrow on hover, presses on click */
+.to-top:hover { transform: translateY(-2px); background: color-mix(in oklch, var(--readout), oklch(40% .03 258) 30%); }
+.to-top:hover .to-top__dots, .to-top:focus-visible .to-top__dots { opacity: 0; transform: scale(.85); }
+.to-top:hover .to-top__up, .to-top:focus-visible .to-top__up { opacity: 1; transform: none; transition-delay: .06s; }
+.to-top:active { transform: scale(.95); transition-duration: .1s; }
+.to-top:focus-visible { outline: 2px solid var(--safelight); outline-offset: 3px; }
+.to-top.is-dim { opacity: 0; translate: 0 1rem; pointer-events: none; }
 
 /* ---------- Hero ---------- */
 .hero {
@@ -350,20 +368,26 @@ a:hover > .arrow, .btn:hover .arrow { transform: translate(2px, -2px); }
 }
 .hero__lead em { color: var(--ink); font-weight: 600; }
 .hero__cta { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2.25rem; }
-.hero__lens {
+/* Portrait: halftone dots over the photo (or a placeholder with initials until one is added) */
+.hero__portrait {
   position: relative;
-  width: min(100%, 36rem);
+  width: min(100%, 37rem);
   aspect-ratio: 1;
   justify-self: end;
-  filter: drop-shadow(0 40px 50px color-mix(in oklch, var(--shade) min(100%, calc(28% * var(--shade-k))), transparent)) drop-shadow(0 8px 12px color-mix(in oklch, var(--shade) min(100%, calc(18% * var(--shade-k))), transparent));
   will-change: transform;
 }
-.lens__svg { width: 100%; height: 100%; overflow: visible; }
-.lens__glare {
-  position: absolute; inset: 4%; border-radius: 50%; pointer-events: none;
-  background: radial-gradient(60% 40% at 32% 18%, oklch(100% 0 0 / .22), transparent 70%);
-  mix-blend-mode: screen;
-}
+.portrait__svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.portrait__ring { fill: none; stroke: var(--line); stroke-width: .6; }
+.portrait__ph1 { stop-color: oklch(36% .03 258); }
+.portrait__ph2 { stop-color: oklch(17% .028 258); }
+:root[data-theme="dark"] .portrait__ph1 { stop-color: oklch(44% .03 258); }
+:root[data-theme="dark"] .portrait__ph2 { stop-color: oklch(25% .03 258); }
+.portrait__initials { font: 600 64px var(--display); letter-spacing: -.03em; fill: oklch(96% .01 250 / .92); }
+.hero__portrait.has-photo .portrait__ph { display: none; }
+/* Same as the photo tiles: the portrait cannot be dragged out, selected or long-press saved */
+.hero__portrait, .hero__portrait * { -webkit-user-drag: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.portrait__svg { pointer-events: none; }   /* nothing to click; the tilt listens on the window */
+.svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
 .hero__scroll {
   position: absolute; left: 50%; bottom: 1.5rem; translate: -50% 0;
   width: 1.6rem; height: 2.6rem; border-radius: 999px;
@@ -426,6 +450,7 @@ a:hover > .arrow, .btn:hover .arrow { transform: translate(2px, -2px); }
   position: absolute; left: -.5rem; top: -.5rem; z-index: 2;
   display: grid; place-items: center; width: 2.25rem; height: 2.25rem; padding: 0; border: 0; border-radius: 50%;
   background: var(--tint); color: var(--ink-2); cursor: pointer;
+  box-shadow: var(--control-hi);
   opacity: .6; transition: opacity .25s ease, background-color .25s ease;
 }
 .project:hover .art__pause, .art__pause:focus-visible, .art__pause[aria-pressed="true"] { opacity: 1; }
@@ -481,9 +506,10 @@ a:hover > .arrow, .btn:hover .arrow { transform: translate(2px, -2px); }
 .pub h3 { font-size: clamp(1.25rem, 2vw, 1.65rem); margin-bottom: .45rem; text-wrap: balance; }
 .pub .me { color: var(--ink); font-weight: 600; }
 .pub p { color: var(--ink-3); font-size: .9375rem; text-wrap: pretty; }
-.pub__link { display: inline-flex; align-items: center; gap: .35rem; font-weight: 500; font-size: .9375rem; padding: .5rem .9rem; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); transition: background-color .25s ease, color .25s ease, box-shadow .25s ease; white-space: nowrap; }
+.pub__link { display: inline-flex; align-items: center; gap: .35rem; font-weight: 500; font-size: .9375rem; padding: .5rem .9rem; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--control-edge), var(--control-hi); transition: background-color .25s ease, color .25s ease, box-shadow .25s ease; white-space: nowrap; }
+:root[data-theme="dark"] .pub__link { background: var(--ghost-bg); }
 .pub__links { display: flex; gap: .4rem; flex-wrap: wrap; justify-content: flex-end; }
-a.pub__link:hover { background: var(--btn-bg); color: var(--btn-fg); box-shadow: none; }
+:root a.pub__link:hover { background: var(--btn-bg); color: var(--btn-fg); box-shadow: none; }
 @media (hover: hover) { .pub:hover .pub__venue, .pub:hover .pub__main { transform: translateX(.75rem); } }
 :root.has-mouse .pub:hover .pub__venue, :root.has-mouse .pub:hover .pub__main { transform: translateX(.75rem); }
 
@@ -663,7 +689,7 @@ a.pub__link:hover { background: var(--btn-bg); color: var(--btn-fg); box-shadow:
 .copy-mail {
   display: inline-flex; align-items: center; gap: .45rem;
   min-height: 2.75rem; padding: 0 1.1rem; border: 0; border-radius: 999px;
-  background: var(--ghost-bg); color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--line);
+  background: var(--ghost-bg); color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--control-edge), var(--control-hi);
   font: 500 .9375rem/1 var(--body); cursor: pointer;
   transition: color .25s ease, background-color .25s ease;
 }
@@ -710,11 +736,10 @@ a.pub__link:hover { background: var(--btn-bg); color: var(--btn-fg); box-shadow:
 .consent__text { color: var(--ink-2); font-size: .9375rem; line-height: 1.45; text-wrap: pretty; }
 .consent__actions { display: flex; gap: .5rem; margin-top: .9rem; }
 .consent__btn { flex: 1; justify-content: center; }
-html.has-consent .fstop { opacity: 0; pointer-events: none; }
+html.has-consent .to-top { opacity: 0; pointer-events: none; }
 
 /* ---------- Night details ---------- */
-:root[data-theme="dark"] .fstop { box-shadow: inset 0 0 0 1px oklch(100% 0 0 / .1), 0 10px 30px -10px oklch(0% 0 0 / .6); }
-:root[data-theme="dark"] .hero__lens { filter: drop-shadow(0 40px 60px oklch(0% 0 0 / .55)) drop-shadow(0 0 70px oklch(62% .16 45 / .16)); }
+:root[data-theme="dark"] .to-top { box-shadow: inset 0 0 0 1px oklch(100% 0 0 / .16), 0 10px 30px -10px oklch(0% 0 0 / .6); }
 :root[data-theme="dark"] .pipe__src-card { stroke: oklch(100% 0 0 / .14); stroke-width: 1; }
 :root[data-theme="dark"] .photo { box-shadow: inset 0 0 0 1px oklch(100% 0 0 / .06); }
 
@@ -729,7 +754,7 @@ html.has-consent .fstop { opacity: 0; pointer-events: none; }
   .nav__links { display: none; }
   .burger { display: block; }
   .hero { grid-template-columns: 1fr; padding-top: 6.5rem; text-align: left; }
-  .hero__lens { justify-self: center; width: min(78vw, 26rem); order: -1; margin-bottom: -1rem; }
+  .hero__portrait { justify-self: center; width: min(82vw, 26rem); order: -1; margin-bottom: .5rem; }
   .hero__scroll { display: none; }
   .projects, .degrees { grid-template-columns: 1fr; }
   .sec__head--split { grid-template-columns: 1fr; }
@@ -753,8 +778,6 @@ html.has-consent .fstop { opacity: 0; pointer-events: none; }
   .nav { padding-left: .9rem; gap: .5rem; }
   .nav__brand span { white-space: nowrap; }
   .nav .btn--small { display: none; }          /* the hero CTA and the menu's Contact cover it on phones */
-  .fstop__num { display: none; }
-  .fstop { padding: .4rem; }
 }
 
 /* ---------- Accessibility preferences ---------- */
@@ -767,6 +790,7 @@ html.has-consent .fstop { opacity: 0; pointer-events: none; }
   .frame:hover::before, .frame:hover img { transform: none; }
   .btn:active { transform: none; }
   .theme__core, .theme__cut, .theme__rays { transition: none; }
+  .nav__brand:hover .nav__caret, .nav__brand:focus-visible .nav__caret { animation: none; }
   .consent { transition: opacity .2s ease; transform: none; }
   .menu, .nav.is-open .menu, .menu a, .nav.is-open .menu a, .burger span { transition: opacity .15s ease, visibility 0s; transform: none; }
   .nav.is-open .burger span:nth-child(1) { transform: rotate(45deg); }
@@ -781,7 +805,7 @@ html.has-consent .fstop { opacity: 0; pointer-events: none; }
 @media (prefers-reduced-transparency: reduce) {
   .nav, .menu, .consent { background: var(--card); -webkit-backdrop-filter: none; backdrop-filter: none; }
   .scrim { -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .fstop { background: oklch(19% .028 258); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .to-top { background: oklch(19% .028 258); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }
 @media (prefers-contrast: more) {
   :root { --ink-3: oklch(38% .02 258); --line: oklch(65% .01 250); }
