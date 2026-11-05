@@ -116,7 +116,9 @@
     })(t0);
   }
 
-  /* ---------- Scroll reveal with stagger ---------- */
+  /* ---------- Scroll reveal with stagger ----------
+     Items fade in as they rise into view and fade out again when they drop back below it
+     (scrolling up), like the timeline. Leaving through the top keeps them shown. */
   function setupReveal() {
     const items = $$('.reveal').filter(n => !n.closest('.hero'));
     // stagger siblings that enter together
@@ -126,7 +128,8 @@
     });
     if (!('IntersectionObserver' in window)) { items.forEach(n => n.classList.add('is-in')); return; }
     const io = new IntersectionObserver(es => es.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      if (e.isIntersecting) e.target.classList.add('is-in');
+      else if (e.boundingClientRect.top > 0) e.target.classList.remove('is-in');
     }), { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
     items.forEach(n => io.observe(n));
   }

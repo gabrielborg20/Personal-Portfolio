@@ -747,15 +747,16 @@ html.has-consent .to-top { opacity: 0; pointer-events: none; }
 :root[data-theme="dark"] .photo { box-shadow: inset 0 0 0 1px oklch(100% 0 0 / .06); }
 
 /* ---------- Reveal motion ---------- */
-.js .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--ease), transform 1.1s var(--ease); transition-delay: var(--d, 0s); }
-.js .reveal.is-in { opacity: 1; transform: none; }
+/* The stagger delay only applies on the way in; on the way out (scrolling back up) items leave at once */
+.js .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--ease), transform 1.1s var(--ease); transition-delay: 0s; }
+.js .reveal.is-in { opacity: 1; transform: none; transition-delay: var(--d, 0s); }
 /* Photography: the red panel arrives first (no sibling stagger), then its copy, then the six tiles one by one.
    Nothing inside shows until the panel itself is in, so the content never appears in an empty box. */
 .js .photo.reveal { transition-delay: 0s; }
-.js .photo .reveal { transition-delay: calc(.35s + var(--d, 0s)); }
+.js .photo.is-in .reveal.is-in { transition-delay: calc(.35s + var(--d, 0s)); }
 .js .photo:not(.is-in) .reveal { opacity: 0; transform: translateY(28px); }
-.js .photo .sheet li { opacity: 0; translate: 0 24px; transition: opacity .9s var(--ease), translate 1.1s var(--ease); transition-delay: calc(.5s + var(--i, 0) * .08s); }
-.js .photo.is-in .sheet li { opacity: 1; translate: none; }
+.js .photo .sheet li { opacity: 0; translate: 0 24px; transition: opacity .9s var(--ease), translate 1.1s var(--ease); }
+.js .photo.is-in .sheet li { opacity: 1; translate: none; transition-delay: calc(.5s + var(--i, 0) * .08s); }
 .sheet li:nth-child(2) { --i: 1; } .sheet li:nth-child(3) { --i: 2; } .sheet li:nth-child(4) { --i: 3; } .sheet li:nth-child(5) { --i: 4; } .sheet li:nth-child(6) { --i: 5; }
 .js .line__in { transform: translateY(105%); transition: transform 1.3s var(--ease); transition-delay: var(--d, 0s); }
 .js .is-ready .line__in, .js .line__in.is-in { transform: none; }
